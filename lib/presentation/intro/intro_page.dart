@@ -148,7 +148,7 @@ class _IntroPage2State extends State<IntroPage2> {
                     hintText: 'Enter your weight',
                     keyboardType: TextInputType.number,
                     inputFormatters: [
-                      FilteringTextInputFormatter.allow(RegExp(r"[\d.]")),
+                      FilteringTextInputFormatter.allow(RegExp(r"[\d]")),
                     ],
                   ),
                 ),
@@ -171,7 +171,7 @@ class _IntroPage2State extends State<IntroPage2> {
             setState(() {
               locator
                   .get<GetStorage>()
-                  .write('weight', double.tryParse(weightController.text));
+                  .write('weight', int.tryParse(weightController.text));
               context.push('/intro/3');
             });
           },
