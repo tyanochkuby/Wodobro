@@ -2,14 +2,30 @@
 
 class DiaryEntry{
   final String date;
-  final String cont;
+  final List<Sip>? sips;
 
-  const DiaryEntry({required this.cont, required this.date } );
+  const DiaryEntry({this.sips, required this.date } );
 
   factory DiaryEntry.fromJson(Map<String, dynamic> json){
     return DiaryEntry(
         date: json['date'] as String,
-        cont: json['cont'] as String,
+        sips: json['sips'].map((e) => Sip.fromJson(e)).toList(),
     );
   }
+}
+
+class Sip{
+  final String time;
+  final int amount;
+
+  const Sip({required this.time, required this.amount});
+
+  factory Sip.fromJson(Map<String, dynamic> json){
+    return Sip(
+      time: json['time'] as String,
+      amount: json['amount'] as int,
+    );
+  }
+
+
 }
