@@ -9,7 +9,7 @@ class DiaryEntry{
   factory DiaryEntry.fromJson(Map<String, dynamic> json){
     return DiaryEntry(
         date: json['date'] as String,
-        sips: json['sips'].map((e) => Sip.fromJson(e)).toList(),
+        sips: (json['sips'] as List).map((e) => Sip.fromJson(e)).toList(),
     );
   }
 }
@@ -22,8 +22,8 @@ class Sip{
 
   factory Sip.fromJson(Map<String, dynamic> json){
     return Sip(
-      time: json['time'] as String,
-      amount: json['amount'] as int,
+      time: json['time'],
+      amount: json['amount'],
     );
   }
 

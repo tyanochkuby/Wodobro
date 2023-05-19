@@ -32,7 +32,6 @@ final GoRouter goRouter = GoRouter(
     GoRoute(
       name: 'home',
       path: '/home',
-      builder: (context, state) => const HomePage(),
-    ),
+      builder: (context, state) => HomePage()),
   ],
 );
