@@ -8,7 +8,7 @@ import 'package:wodobro/application/routes.dart';
 
 
 void main() async{
-
+  WidgetsFlutterBinding.ensureInitialized();
   //Setting SysemUIOverlay
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemStatusBarContrastEnforced: true,

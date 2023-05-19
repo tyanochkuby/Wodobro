@@ -169,10 +169,13 @@ class _IntroPage2State extends State<IntroPage2> {
           ),
           onPressed: () {
             setState(() {
-              locator
-                  .get<GetStorage>()
-                  .write('weight', int.tryParse(weightController.text));
-              context.push('/intro/3');
+              if (!weightController.text.isEmpty) {
+                locator
+                    .get<GetStorage>().write('weight', int.parse(weightController.text));
+                locator.get<GetStorage>().write(
+                    'waterForDay', int.parse(weightController.text) * 30);
+                context.push('/intro/3');
+              }
             });
           },
           child: Text(

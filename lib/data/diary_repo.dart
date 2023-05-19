@@ -36,4 +36,12 @@ class DiaryRepo {
     diary.add(entry);
     await saveDiary(diary);
   }
+
+  Future<DiaryEntry> getEntryByDay(String date) async{
+    final diary = await loadDiary();
+    if (date == "today") date = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final entry = diary.firstWhere((entry) => entry.date == date, orElse: () => DiaryEntry(date: date, sips: []));
+    return entry;
+  }
+
 }
