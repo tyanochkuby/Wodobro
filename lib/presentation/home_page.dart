@@ -140,7 +140,9 @@ class _HomePageState extends State<HomePage> {
                       .bodyMedium
                       ?.copyWith(color: Colors.black45)),
               onTap: () {
-                locator.get<DiaryDomainController>().addSip(null, 100, null);
+                setState((){
+                  locator.get<DiaryDomainController>().addSip(null, 100, null);
+                });
               },
             ),
             SpeedDialChild(
@@ -150,7 +152,9 @@ class _HomePageState extends State<HomePage> {
                         .bodyMedium
                         ?.copyWith(color: Colors.black45)),
                 onTap: () {
-                  locator.get<DiaryDomainController>().addSip(null, 200, null);
+                  setState(() {
+                    locator.get<DiaryDomainController>().addSip(null, 200, null);
+                  });
                 }),
             SpeedDialChild(
                 child: Text('500 ml',
@@ -159,7 +163,9 @@ class _HomePageState extends State<HomePage> {
                         .bodyMedium
                         ?.copyWith(color: Colors.black45)),
                 onTap: () {
-                  locator.get<DiaryDomainController>().addSip(null, 500, null);
+                  setState(() {
+                    locator.get<DiaryDomainController>().addSip(null, 500, null);
+                  });
                 }),
           ],
         ));
