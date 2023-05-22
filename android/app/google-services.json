@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "657863146043",
+    "project_id": "wodobro-a53c8",
+    "storage_bucket": "wodobro-a53c8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657863146043:android:6ba1f34318e4e1d4743a1e",
+        "android_client_info": {
+          "package_name": "com.example.wodobro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657863146043-gir109a0nl846qhavg1d2c49vtce6lai.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDonDxUaob_Hv06y3TDCOg6yZkSbh4zNi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657863146043-gir109a0nl846qhavg1d2c49vtce6lai.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "657863146043-n7ak7bi5khhomucrabvigko64gungi04.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.wodobro"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
