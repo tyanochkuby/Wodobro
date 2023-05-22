@@ -7,11 +7,20 @@ import 'dart:io';
 import 'package:wodobro/application/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  print('starting app');
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {}
+  print('firebase inited');
+
+
   //Setting SysemUIOverlay
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemStatusBarContrastEnforced: true,
