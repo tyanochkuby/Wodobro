@@ -132,13 +132,16 @@ class _HomePageState extends State<HomePage> {
           icon: Icons.add,
           overlayColor: Colors.black,
           overlayOpacity: 0.3,
+          elevation: 10.0,
+          buttonSize: Size(100.0, 100.0),
+          childrenButtonSize: Size(80.0, 80.0),
           children: [
             SpeedDialChild(
               child: Text('100 ml',
                   style: Theme.of(context)
                       .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.black45)),
+                      .bodyLarge
+                      ?.copyWith(color: Colors.black45, fontWeight: FontWeight.bold)),
               onTap: () {
                 setState((){
                   locator.get<DiaryDomainController>().addSip(null, 100, null);
@@ -149,8 +152,8 @@ class _HomePageState extends State<HomePage> {
                 child: Text('200 ml',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.black45)),
+                        .bodyLarge
+                        ?.copyWith(color: Colors.black45, fontWeight: FontWeight.bold)),
                 onTap: () {
                   setState(() {
                     locator.get<DiaryDomainController>().addSip(null, 200, null);
@@ -160,8 +163,8 @@ class _HomePageState extends State<HomePage> {
                 child: Text('500 ml',
                     style: Theme.of(context)
                         .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.black45)),
+                        .bodyLarge
+                        ?.copyWith(color: Colors.black45, fontWeight: FontWeight.bold)),
                 onTap: () {
                   setState(() {
                     locator.get<DiaryDomainController>().addSip(null, 500, null);
