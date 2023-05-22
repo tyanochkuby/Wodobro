@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:wodobro/domain/models/diary_entry.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DiaryRepo {
   Future<void> saveDiary(List<DiaryEntry> diary) async {
+    //if (kIsWeb) return;
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/.wodobro/diary.json');
     await file.writeAsString(jsonEncode(diary));
