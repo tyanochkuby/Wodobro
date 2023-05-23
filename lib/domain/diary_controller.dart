@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:wodobro/domain/models/diary_entry.dart';
-import 'package:wodobro/locator.dart';
+import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/data/diary_repo.dart';
 
 class DiaryDomainController {
