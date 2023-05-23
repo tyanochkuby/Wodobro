@@ -5,10 +5,9 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wodobro/data/diary_repo.dart';
 import 'package:wodobro/domain/diary_controller.dart';
-import 'package:wodobro/locator.dart';
+import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/presentation/widgets/add_close_animatedicon.dart';
 import 'package:animate_icons/animate_icons.dart';
-import 'package:wodobro/locator.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
 
