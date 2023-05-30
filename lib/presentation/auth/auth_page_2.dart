@@ -27,12 +27,12 @@ class _RegisterPageState extends State<RegisterPage> {
               setState(() {});
 
               User? user = await AuthService.signInWithGoogle(context: context);
-
+              
               setState(() {});
 
               if (user != null) {
                 print('user signed in');
-                context.go('/home');
+                context.go('/intro/1');
               }
             },
             style: ButtonStyle(
