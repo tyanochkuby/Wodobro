@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "657863146043-01vfg6r1okjt22b37552tukl6aac93j5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wodobro",
+            "certificate_hash": "db348ca6aac23c263daaa45c6e9e36e8596721b4"
+          }
+        },
+        {
           "client_id": "657863146043-8sr93o6nhn3l141lj514d5farijntqq3.apps.googleusercontent.com",
           "client_type": 3
         }

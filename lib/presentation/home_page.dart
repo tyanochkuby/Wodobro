@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,21 +24,7 @@ class _HomePageState extends State<HomePage> {
 //class HomePage extends StatelessWidget {
   final GlobalKey<AnimatedCircularChartState> _chartKey =
       new GlobalKey<AnimatedCircularChartState>();
-  // late Future<int> drinkToday;
-  // late Future<int> waterRemained;
-  // late double waterRemained;
-  //
-  // getDrinkToday() async{
-  //   drinkToday = await locator.get<DiaryDomainController>().getTodayHydration();
-  //   return drinkToday;
-  // }
-  //
-  //@override
-  // void initState() {
-  //   super.initState();
-  //   drinkToday = locator.get<DiaryDomainController>().getTodayHydration();
-  //   waterRemained = locator.get<GetStorage>().read('waterForDay') - drinkToday;
-  // }
+  int selectedPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +35,28 @@ class _HomePageState extends State<HomePage> {
               LavaAnimation(
                 child: Column(
                   children: [
-                    Text('Home Page',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayMedium
-                            ?.copyWith(color: Colors.black38)),
+                    SizedBox(height: 50),
+
+                    StreamBuilder(
+                      stream: FirebaseAuth.instance.authStateChanges(),
+                      builder: (context, snapshot) {
+                        if(snapshot.connectionState == ConnectionState.waiting)
+                          return Center(child: CircularProgressIndicator());
+                        else if(snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        else if (snapshot.hasData) {
+                          final user = FirebaseAuth.instance.currentUser;
+                          return Text('Hello, ${user!.displayName}!',
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .displayMedium
+                                  ?.copyWith(color: Colors.black38));
+                        }
+                        else
+                          return Text('Not logged in');
+                      }
+                    ),
                     FutureBuilder<int>(
                         future:
                             locator.get<DiaryDomainController>().getTodayHydration(),
@@ -100,30 +105,6 @@ class _HomePageState extends State<HomePage> {
                 ),
                   color: Color.fromRGBO(66, 165, 245, 0.6),
               ),
-              // new AnimatedCircularChart(
-              //   key: _chartKey,
-              //   size: Size(300.0, 300.0),
-              //   initialChartData: <CircularStackEntry>[
-              //     new CircularStackEntry(
-              //       <CircularSegmentEntry>[
-              //         new CircularSegmentEntry(
-              //           drinkToday,
-              //           //200,
-              //           Colors.blue[400],
-              //           rankKey: 'completed',
-              //         ),
-              //         new CircularSegmentEntry(
-              //           waterRemained,
-              //           Colors.blueGrey[600],
-              //           rankKey: 'remaining',
-              //         ),
-              //       ],
-              //       rankKey: 'progress',
-              //     ),
-              //   ],
-              //   chartType: CircularChartType.Radial,
-              //   percentageValues: true,
-              // )
             ],
           ),
         ),
@@ -170,6 +151,29 @@ class _HomePageState extends State<HomePage> {
                   });
                 }),
           ],
-        ));
+        ),
+      bottomNavigationBar: NavigationBar(
+      selectedIndex: selectedPageIndex,
+      onDestinationSelected: (int index) {
+        if(index == 1)
+          {
+            context.go('/tips');
+          }
+      },
+      destinations: const <NavigationDestination>[
+        NavigationDestination(
+          selectedIcon: Icon(Icons.home),
+          icon: Icon(Icons.home_outlined),
+          label: 'Home',
+
+        ),
+        NavigationDestination(
+          selectedIcon: Icon(Icons.lightbulb),
+          icon: Icon(Icons.lightbulb_outlined),
+          label: 'Tips',
+        ),
+      ],
+    ),
+    );
   }
 }

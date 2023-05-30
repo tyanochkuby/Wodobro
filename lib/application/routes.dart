@@ -6,6 +6,7 @@ import 'package:wodobro/application/locator.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:wodobro/presentation/auth/auth_page.dart';
 import 'package:wodobro/presentation/auth/auth_page_2.dart';
+import 'package:wodobro/presentation/tips_page.dart';
 import 'dart:io' show Platform;
 
 import 'package:wodobro/presentation/intro/intro_page.dart';
@@ -18,7 +19,11 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final GoRouter goRouter = GoRouter(
   //navigatorKey: _rootNavigatorKey,
-  initialLocation: (kIsWeb) ? '/auth/1' : (locator.get<GetStorage>().read('userIsLoggedIn') ? locator.get<GetStorage>().read('initialLocation') : 'auth/1'),
+  initialLocation: (kIsWeb)
+      ? '/auth/1'
+      : (locator.get<GetStorage>().read('userIsLoggedIn')
+          ? locator.get<GetStorage>().read('initialLocation')
+          : '/auth/1'),
   observers: [HeroController()],
   routes: [
     GoRoute(
@@ -36,17 +41,21 @@ final GoRouter goRouter = GoRouter(
         path: '/intro/3',
         builder: (context, state) => IntroPage3()),
     GoRoute(
-      name: 'home',
-      path: '/home',
-      builder: (context, state) => HomePage()),
+        name: 'home', path: '/home', builder: (context, state) => HomePage()),
     GoRoute(
       name: 'auth_start',
       path: '/auth/1',
-      builder: (context, state) => const AuthPage(),),
+      builder: (context, state) => const AuthPage(),
+    ),
     GoRoute(
       name: 'auth',
       path: '/auth/2',
-      builder: (context, state) => const RegisterPage(),),
-
+      builder: (context, state) => const RegisterPage(),
+    ),
+    GoRoute(
+      name: 'tips',
+      path: '/tips',
+      builder: (context, state) => const TipsPage(),
+    ),
   ],
 );
