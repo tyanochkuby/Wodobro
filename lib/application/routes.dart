@@ -6,7 +6,7 @@ import 'package:wodobro/application/locator.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:wodobro/presentation/auth/auth_page.dart';
 import 'package:wodobro/presentation/auth/auth_page_2.dart';
-import 'package:wodobro/presentation/tips_page.dart';
+import 'package:wodobro/presentation/pages/tips.dart';
 import 'dart:io' show Platform;
 
 import 'package:wodobro/presentation/intro/intro_page.dart';
