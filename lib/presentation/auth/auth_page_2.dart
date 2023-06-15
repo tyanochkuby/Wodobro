@@ -44,8 +44,12 @@ class _RegisterPageState extends State<RegisterPage> {
                 if (doc.exists) {
                   // Map<String, dynamic>? data = doc.data();
                   // final diary = doc.data()?['diary'];
+                  print(doc.data()?['user']);
+                  int weight = doc.data()?['user'];
                   locator.get<GetStorage>().write(
-                      'weight', doc.data()?['user']);
+                      'weight', weight);
+                  locator.get<GetStorage>().write('waterForDay', weight * 30);
+                  locator.get<GetStorage>().write('initialLocation', '/home');
                   context.go('/home');
                 }
                 else

@@ -27,12 +27,6 @@ class DiaryRepo {
           'user': locator.get<GetStorage>().read('weight'),
           'diary': mapedDiary,
         };
-        // final docID = locator.get<GetStorage>().read('firestoreDocID');
-        // if(docID == null)
-        //   db.collection('diaries').add(diaryToSave).then((DocumentReference doc) =>
-        //   locator.get<GetStorage>().write('firestoreDocID', doc));
-        // else
-        //   db.collection('diaries').doc(docID).update(diaryToSave);
         db.collection('diaries').doc(user.uid).set(diaryToSave);
       }
       if (Platform.isAndroid) locator.get<GetStorage>().write('Diary', diary);
@@ -55,8 +49,6 @@ class DiaryRepo {
         final userDocRef = db.collection('diaries').doc(user.uid);
         final doc = await userDocRef.get();
         if (doc.exists) {
-          // Map<String, dynamic>? data = doc.data();
-          // final diary = doc.data()?['diary'];
           return doc
               .data()?['diary']
               .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))

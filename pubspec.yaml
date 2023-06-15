@@ -46,11 +46,13 @@ dependencies:
   google_nav_bar: ^5.0.6
   circular_chart_flutter: ^0.0.2
   json_annotation: ^4.8.0
-  firebase_core: ^2.13.0
+  firebase_core: ^2.13.1
   cloud_firestore: ^4.7.1
-  firebase_auth: ^4.6.1
+  firebase_auth: ^4.6.2
   google_sign_in: ^6.1.1
-  firebase_storage: ^11.2.1
+  get: ^4.3.8
+  loading_animation_widget: ^1.2.0+4
+  firebase_storage: ^11.2.2
 
 dev_dependencies:
   flutter_test:
