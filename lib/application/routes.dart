@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/services.dart';
+import 'package:wodobro/application/auth_service.dart';
 import 'package:wodobro/application/locator.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:wodobro/presentation/auth/auth_page.dart';
@@ -21,9 +23,9 @@ final GoRouter goRouter = GoRouter(
   //navigatorKey: _rootNavigatorKey,
   initialLocation: (kIsWeb)
       ? '/auth/1'
-      : (locator.get<GetStorage>().read('userIsLoggedIn')
-          ? locator.get<GetStorage>().read('initialLocation')
-          : '/auth/1'),
+      : FirebaseAuth.instance.currentUser != null ?
+  locator.get<GetStorage>().read('initialLocation')
+      : '/auth/1',
   observers: [HeroController()],
   routes: [
     GoRoute(
