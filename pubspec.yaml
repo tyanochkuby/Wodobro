@@ -53,6 +53,7 @@ dependencies:
   get: ^4.3.8
   loading_animation_widget: ^1.2.0+4
   firebase_storage: ^11.2.2
+  blurrycontainer: ^1.0.2
 
 dev_dependencies:
   flutter_test:
