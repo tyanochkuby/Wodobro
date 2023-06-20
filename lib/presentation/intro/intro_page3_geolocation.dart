@@ -26,9 +26,12 @@ class _IntroPage3State extends State<IntroPage3> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(height:50),
                 Expanded(
                   child: Text(
-                      'Now, we need to know your location\nGive us permission to access your location',
+                      'Now, we need to know your location\n'
+                      'This way we can calculate the amount of water\n'
+                      'you need to drink today',
                       style: Theme.of(context)
                           .textTheme
                           .displayMedium
@@ -42,38 +45,37 @@ class _IntroPage3State extends State<IntroPage3> {
       ),
       bottomNavigationBar: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 24),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-              ),
-              onPressed: () async {
-                if (!await locator
-                    .get<PositionController>()
-                    .checkPermissionGranted()) {
-                  locator
-                      .get<GetStorage>()
-                      .write('isLocationPermissionGranted', false);
-                } else
-                  locator
-                      .get<GetStorage>()
-                      .write('isLocationPermissionGranted', true);
-                locator.get<GetStorage>().write('initialLocation', '/home');
+        padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 24),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.all(18),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+          ),
+          onPressed: () async {
+            if (!await locator
+                .get<PositionController>()
+                .requestPermission()) {
+              locator
+                  .get<GetStorage>()
+                  .write('isLocationPermissionGranted', false);
+            } else
+              locator
+                  .get<GetStorage>()
+                  .write('isLocationPermissionGranted', true);
 
-                context.go('/home');
-              },
-              child: Text(
-                'Sure! Ask me for permission',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            context.go('/intro/4');
+          },
+          child: Text(
+            'Sure! Ask me for permission',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: const Color.fromRGBO(245, 245, 247, 0.9),
                   fontWeight: FontWeight.bold,
                 ),
-              ),
-            ),
-          )),
+          ),
+        ),
+      )),
     );
   }
 }

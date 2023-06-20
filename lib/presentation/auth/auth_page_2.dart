@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wodobro/application/auth_service.dart';
+import 'package:wodobro/domain/position_controller.dart';
 
 import '../../application/locator.dart';
+import '../../domain/notification_controller.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -46,13 +48,29 @@ class _RegisterPageState extends State<RegisterPage> {
                   // final diary = doc.data()?['diary'];
                   print(doc.data()?['user']);
                   int weight = doc.data()?['user'];
-                  locator.get<GetStorage>().write(
-                      'weight', weight);
+                  locator.get<GetStorage>().write('weight', weight);
                   locator.get<GetStorage>().write('waterForDay', weight * 30);
-                  locator.get<GetStorage>().write('initialLocation', '/home');
-                  context.go('/home');
-                }
-                else
+                  if (await locator
+                      .get<PositionController>()
+                      .checkPermissionGranted()) {
+                    if (await Notifications.checkNotificationPermissions()) {
+                      locator
+                          .get<GetStorage>()
+                          .write('initialLocation', '/home');
+                      context.go('/home');
+                    } else {
+                      locator
+                          .get<GetStorage>()
+                          .write('initialLocation', '/intro/4');
+                      context.go('/intro/4');
+                    }
+                  } else {
+                    locator
+                        .get<GetStorage>()
+                        .write('initialLocation', '/intro/3');
+                    context.go('/intro/3');
+                  }
+                } else
                   context.go('/intro/1');
               }
             },
@@ -61,8 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8))),
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(Colors.white),
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

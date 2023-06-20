@@ -4,18 +4,29 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class PositionController extends GetxController {
-  final positionString = ''.obs;
+  Rx<Position> rxPosition = Position.fromMap({'latitude': 0.0, 'longitude': 0.0}).obs;
 
-  Future<void> getGeoPosition() async {
+  Future<Position> getGeoPosition() async {
     var permissionGranted = await checkPermissionGranted();
-    if (!permissionGranted) return;
+    if (!permissionGranted) return Position.fromMap({'latitude': 0.0, 'longitude': 0.0});
     Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
+      desiredAccuracy: LocationAccuracy.medium,
     );
-    positionString.value = position.toString();
+    return position;
   }
 
-  Future<bool> checkPermissionGranted() async {
+  Future<bool> checkPermissionGranted() async{
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever || permission == LocationPermission.denied || permission == LocationPermission.unableToDetermine) {
+      return false;
+    } else if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+      return true;
+    }
+    else
+      return false;
+  }
+
+  Future<bool> requestPermission() async {
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       return false;
@@ -47,7 +58,7 @@ class PositionController extends GetxController {
         distanceFilter: 1000,
       ),
     ).listen((Position newPosition) {
-      positionString.value = newPosition.toString();
+      rxPosition.value = newPosition;
     });
   }
 

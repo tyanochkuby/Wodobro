@@ -28,102 +28,116 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: selectedPageIndex == 0 ? Center(
-        child: Column(
-          children: [
-            LavaAnimation(
-              child: SizedBox(
-                height: 500,
-                width: MediaQuery.of(context).size.width,
-                child: Column(
-                  children: [
-                    SizedBox(height: 50),
-                    StreamBuilder(
-                        stream: FirebaseAuth.instance.authStateChanges(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting)
-                            return Center(child: CircularProgressIndicator());
-                          else if (snapshot.hasError)
-                            return Text('Error: ${snapshot.error}');
-                          else {
-                            //else if //(snapshot.hasData) {
-                            final user = FirebaseAuth.instance.currentUser;
-                            return Text('Hello, ${user!.displayName}!',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayMedium
-                                    ?.copyWith(color: Colors.black38));
-                          } // else
-                          //   return Text('Not logged in');
-                        }),
-                    FutureBuilder<int>(
-                        future: locator
-                            .get<DiaryDomainController>()
-                            .getTodayHydration(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting)
-                            return Text('Loading....');
-                          else {
-                            if (snapshot.error != null)
-                              return Text('Error: ${snapshot.error}');
-                            else {
-                              final double drunk = snapshot.data!.toDouble();
-                              locator.get<GetStorage>().write('drunk', drunk);
-                              return BlurryContainer(
-                                blur: 8,
-                                borderRadius: BorderRadius.circular(50),
-                                elevation: 0,
-                                height: 305,
-                                width: 305,
-                                //padding: EdgeInsets.all(20),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: AnimatedCircularChart(
-                                    key: locator.get<GlobalKey<AnimatedCircularChartState>>(),
-                                    size: Size(300.0, 300.0),
-                                    initialChartData: <CircularStackEntry>[
-                                      new CircularStackEntry(
-                                        <CircularSegmentEntry>[
-                                          new CircularSegmentEntry(
-                                            drunk,
-                                            Color.fromRGBO(22, 48, 90, 1),
-                                            rankKey: 'completed',
-                                          ),
-                                          new CircularSegmentEntry(
-                                            locator
-                                                .get<GetStorage>()
-                                                .read('waterForDay') -
-                                                drunk,
-                                            Colors.blueGrey[600],
-                                            rankKey: 'remaining',
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                    chartType: CircularChartType.Radial,
-                                    edgeStyle: SegmentEdgeStyle.round,
-                                    holeLabel:
-                                    '${locator.get<GetStorage>().read('drunk')} / ${locator.get<GetStorage>().read('waterForDay')} ml',
-                                    labelStyle: new TextStyle(
-                                      color: Colors.blueGrey[600],
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24.0,
+      body: selectedPageIndex == 0
+          ? Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 500,
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: [
+                        SizedBox(height: 50),
+                        StreamBuilder(
+                            stream: FirebaseAuth.instance.authStateChanges(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              else if (snapshot.hasError)
+                                return Text('Error: ${snapshot.error}');
+                              else {
+                                //else if //(snapshot.hasData) {
+                                final user = FirebaseAuth.instance.currentUser;
+                                return Text('Hello, ${user!.displayName}!',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium
+                                        ?.copyWith(color: Colors.black38));
+                              } // else
+                              //   return Text('Not logged in');
+                            }),
+                        FutureBuilder<int>(
+                            future: locator
+                                .get<DiaryDomainController>()
+                                .getTodayHydration(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return Text('Loading....');
+                              else {
+                                if (snapshot.error != null)
+                                  return Text('Error: ${snapshot.error}');
+                                else {
+                                  final double drunk =
+                                      snapshot.data!.toDouble();
+                                  locator
+                                      .get<GetStorage>()
+                                      .write('drunk', drunk);
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(Radius.circular(20))
                                     ),
-                                  ),
-                                ),
-
-                              );
-                            }
-                          }
-                        }),
-                  ],
-                ),
+                                    child: LavaAnimation(
+                                      color: Color.fromRGBO(66, 165, 245, 0.6),
+                                      child: BlurryContainer(
+                                        blur: 8,
+                                        borderRadius: BorderRadius.circular(50),
+                                        elevation: 0,
+                                        height: 305,
+                                        width: 305,
+                                        //padding: EdgeInsets.all(20),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: AnimatedCircularChart(
+                                            key: locator.get<
+                                                GlobalKey<
+                                                    AnimatedCircularChartState>>(),
+                                            size: Size(300.0, 300.0),
+                                            initialChartData: <CircularStackEntry>[
+                                              new CircularStackEntry(
+                                                <CircularSegmentEntry>[
+                                                  new CircularSegmentEntry(
+                                                    drunk,
+                                                    Color.fromRGBO(22, 48, 90, 1),
+                                                    rankKey: 'completed',
+                                                  ),
+                                                  new CircularSegmentEntry(
+                                                    locator
+                                                            .get<GetStorage>()
+                                                            .read('waterForDay') -
+                                                        drunk,
+                                                    Colors.blueGrey[600],
+                                                    rankKey: 'remaining',
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                            chartType: CircularChartType.Radial,
+                                            edgeStyle: SegmentEdgeStyle.round,
+                                            holeLabel:
+                                                '${locator.get<GetStorage>().read('drunk')} / ${locator.get<GetStorage>().read('waterForDay')} ml',
+                                            labelStyle: new TextStyle(
+                                              color: Colors.blueGrey[600],
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }
+                            }),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              color: Color.fromRGBO(66, 165, 245, 0.6),
-            ),
-          ],
-        ),
-      ) : pages[selectedPageIndex],
+            )
+          : pages[selectedPageIndex],
       floatingActionButton: selectedPageIndex == 0
           ? SpeedDial(
               icon: Icons.add,
@@ -160,7 +174,10 @@ class _HomePageState extends State<HomePage> {
                     ];
                     setState(() {
                       locator.get<GetStorage>().write('drunk', drunk + 100.0);
-                      locator.get<GlobalKey<AnimatedCircularChartState>>().currentState?.updateData(nextData);
+                      locator
+                          .get<GlobalKey<AnimatedCircularChartState>>()
+                          .currentState
+                          ?.updateData(nextData);
                     });
                   },
                 ),
@@ -174,17 +191,14 @@ class _HomePageState extends State<HomePage> {
                           .get<DiaryDomainController>()
                           .addSip(null, 200, null);
                       double drunk = locator.get<GetStorage>().read('drunk');
-                      List<CircularStackEntry> nextData =
-                      <CircularStackEntry>[
+                      List<CircularStackEntry> nextData = <CircularStackEntry>[
                         new CircularStackEntry(
                           <CircularSegmentEntry>[
                             new CircularSegmentEntry(
                                 (drunk + 200.0), Color.fromRGBO(22, 48, 90, 1),
                                 rankKey: 'completed'),
                             new CircularSegmentEntry(
-                                locator
-                                    .get<GetStorage>()
-                                    .read('waterForDay') -
+                                locator.get<GetStorage>().read('waterForDay') -
                                     drunk -
                                     200.0,
                                 Colors.blueGrey[600],
@@ -195,7 +209,10 @@ class _HomePageState extends State<HomePage> {
                       ];
                       setState(() {
                         locator.get<GetStorage>().write('drunk', drunk + 200.0);
-                        locator.get<GlobalKey<AnimatedCircularChartState>>().currentState?.updateData(nextData);
+                        locator
+                            .get<GlobalKey<AnimatedCircularChartState>>()
+                            .currentState
+                            ?.updateData(nextData);
                       });
                     }),
                 SpeedDialChild(
@@ -208,17 +225,14 @@ class _HomePageState extends State<HomePage> {
                           .get<DiaryDomainController>()
                           .addSip(null, 500, null);
                       double drunk = locator.get<GetStorage>().read('drunk');
-                      List<CircularStackEntry> nextData =
-                      <CircularStackEntry>[
+                      List<CircularStackEntry> nextData = <CircularStackEntry>[
                         new CircularStackEntry(
                           <CircularSegmentEntry>[
                             new CircularSegmentEntry(
                                 (drunk + 500.0), Color.fromRGBO(22, 48, 90, 1),
                                 rankKey: 'completed'),
                             new CircularSegmentEntry(
-                                locator
-                                    .get<GetStorage>()
-                                    .read('waterForDay') -
+                                locator.get<GetStorage>().read('waterForDay') -
                                     drunk -
                                     500.0,
                                 Colors.blueGrey[600],
@@ -229,7 +243,10 @@ class _HomePageState extends State<HomePage> {
                       ];
                       setState(() {
                         locator.get<GetStorage>().write('drunk', drunk + 500.0);
-                        locator.get<GlobalKey<AnimatedCircularChartState>>().currentState?.updateData(nextData);
+                        locator
+                            .get<GlobalKey<AnimatedCircularChartState>>()
+                            .currentState
+                            ?.updateData(nextData);
                       });
                     }),
               ],
