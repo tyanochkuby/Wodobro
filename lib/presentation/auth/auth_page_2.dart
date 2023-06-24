@@ -50,9 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   int weight = doc.data()?['user'];
                   locator.get<GetStorage>().write('weight', weight);
                   locator.get<GetStorage>().write('waterForDay', weight * 30);
-                  if (await locator
-                      .get<PositionController>()
-                      .checkPermissionGranted()) {
+                  if (await PositionController.checkPermissionGranted()) {
                     if (await Notifications.checkNotificationPermissions()) {
                       locator
                           .get<GetStorage>()

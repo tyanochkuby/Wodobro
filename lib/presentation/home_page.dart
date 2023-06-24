@@ -11,6 +11,8 @@ import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:wodobro/presentation/pages/home.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
 
+import '../domain/notification_controller.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -33,7 +35,7 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 500,
+                    height: 600,
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
@@ -131,6 +133,9 @@ class _HomePageState extends State<HomePage> {
                                 }
                               }
                             }),
+                        SizedBox(height: 50,),
+                        ElevatedButton(onPressed: () {Notifications.registerDailyForecastNotifications(
+                            time: TimeOfDay.now());}, child: const Text('Subscribe'))
                       ],
                     ),
                   ),

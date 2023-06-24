@@ -40,7 +40,5 @@ void setup() {
   locator.registerLazySingleton<TipsDomainController>(() => TipsDomainController());
   locator.registerLazySingleton<GetStorage>(() => box);
   locator.registerLazySingleton<PositionController>(() => PositionController());
-  //locator.registerLazySingleton<Notifications>(() => Notifications());
-  locator.registerLazySingleton<TemperatureDomainController>(() => TemperatureDomainController());
   locator.registerLazySingleton<GlobalKey<AnimatedCircularChartState>>(() => _chartKey);
 }

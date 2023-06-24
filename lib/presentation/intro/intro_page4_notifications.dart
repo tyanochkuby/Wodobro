@@ -13,6 +13,7 @@ import '../widgets/lava.dart';
 class IntroPage4 extends StatelessWidget {
   const IntroPage4({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +68,11 @@ class IntroPage4 extends StatelessWidget {
                 context.go('/home');
               }
             },
-            child: Text('Yep, ask for permission'),
+            child: Text('Yep, ask for permission',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: const Color.fromRGBO(245, 245, 247, 0.9),
+                fontWeight: FontWeight.bold,
+              ),),
           ),
         ),
       ),
@@ -86,3 +91,5 @@ Future<void> requestNotificationPermissions() async {
     // Notification permissions permanently denied, open app settings
   }
 }
+
+

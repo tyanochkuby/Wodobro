@@ -1,19 +1,21 @@
 import 'dart:convert';
-import 'package:get/get.dart';
-import 'package:timezone/data/latest.dart' as tz;
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:wodobro/application/locator.dart';
-import 'package:workmanager/workmanager.dart';
+import 'package:wodobro/domain/position_controller.dart';
 
 
-class TemperatureDomainController extends GetxController {
-  RxDouble maxDayTemperature = 0.0.obs;
+class TemperatureDomainController{
 
-  Future<double> getTodayMaxTemperature() async {
+  static Future<double> getTodayMaxTemperature() async {
     http.Client client = http.Client();
 
-    final response = await client.get(Uri.parse(
-        'https://api.open-meteo.com/v1/forecast?latitude=52.41&longitude=16.93&daily=temperature_2m_max&forecast_days=1&timezone=Europe%2FBerlin'));
+    Position position = await PositionController.getGeoPosition();
+    double longitude = double.parse((position.longitude).toStringAsFixed(2));
+    double latitude = double.parse((position.latitude).toStringAsFixed(2));
+    final String url = 'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&daily=temperature_2m_max&forecast_days=1&timezone=Europe%2FBerlin';
+    final response = await client.get(Uri.parse(url));
+    print(response.body);
     Map<String, dynamic> forecastMap = json.decode(response.body);
     double maxTemp = forecastMap['daily']['temperature_2m_max'][0];
     return maxTemp;

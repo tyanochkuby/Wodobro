@@ -54,9 +54,7 @@ class _IntroPage3State extends State<IntroPage3> {
             ),
           ),
           onPressed: () async {
-            if (!await locator
-                .get<PositionController>()
-                .requestPermission()) {
+            if (!await PositionController.requestPermission()) {
               locator
                   .get<GetStorage>()
                   .write('isLocationPermissionGranted', false);
