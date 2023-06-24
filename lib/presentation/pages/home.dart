@@ -44,7 +44,11 @@ Widget Home(){
                       .getTodayHydration(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting)
-                      return Text('Loading....');
+                      return Text('Loading....',
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(color: Colors.black38));
                     else {
                       if (snapshot.error != null)
                         return Text('Error: ${snapshot.error}');

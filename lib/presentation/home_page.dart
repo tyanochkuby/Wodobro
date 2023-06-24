@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 import 'package:wodobro/application/locator.dart';
+import 'package:wodobro/presentation/pages/diary.dart';
 import 'package:wodobro/presentation/pages/tips.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:wodobro/presentation/pages/home.dart';
@@ -24,12 +25,14 @@ class _HomePageState extends State<HomePage> {
   int selectedPageIndex = 0;
   final List<Widget> pages = [
     Home(),
+    //DiaryPage(),
     TipsPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: selectedPageIndex == 1 ? Colors.blueGrey[200] : Colors.white,
       body: selectedPageIndex == 0
           ? Center(
               child: Column(
@@ -79,8 +82,8 @@ class _HomePageState extends State<HomePage> {
                                       .write('drunk', drunk);
                                   return Container(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(Radius.circular(20))
-                                    ),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
                                     child: LavaAnimation(
                                       color: Color.fromRGBO(66, 165, 245, 0.6),
                                       child: BlurryContainer(
@@ -102,13 +105,15 @@ class _HomePageState extends State<HomePage> {
                                                 <CircularSegmentEntry>[
                                                   new CircularSegmentEntry(
                                                     drunk,
-                                                    Color.fromRGBO(22, 48, 90, 1),
+                                                    Color.fromRGBO(
+                                                        22, 48, 90, 1),
                                                     rankKey: 'completed',
                                                   ),
                                                   new CircularSegmentEntry(
                                                     locator
                                                             .get<GetStorage>()
-                                                            .read('waterForDay') -
+                                                            .read(
+                                                                'waterForDay') -
                                                         drunk,
                                                     Colors.blueGrey[600],
                                                     rankKey: 'remaining',
@@ -133,16 +138,15 @@ class _HomePageState extends State<HomePage> {
                                 }
                               }
                             }),
-                        SizedBox(height: 50,),
-                        ElevatedButton(onPressed: () {Notifications.registerDailyForecastNotifications(
-                            time: TimeOfDay.now());}, child: const Text('Subscribe'))
                       ],
                     ),
                   ),
                 ],
               ),
             )
-          : pages[selectedPageIndex],
+          : selectedPageIndex == 1
+              ? DiaryPage(context)
+              : TipsPage(),
       floatingActionButton: selectedPageIndex == 0
           ? SpeedDial(
               icon: Icons.add,
@@ -184,6 +188,9 @@ class _HomePageState extends State<HomePage> {
                           .currentState
                           ?.updateData(nextData);
                     });
+                    setState(() {
+
+                    });
                   },
                 ),
                 SpeedDialChild(
@@ -219,6 +226,9 @@ class _HomePageState extends State<HomePage> {
                             .currentState
                             ?.updateData(nextData);
                       });
+                      setState(() {
+
+                      });
                     }),
                 SpeedDialChild(
                     child: Text('500 ml',
@@ -253,6 +263,9 @@ class _HomePageState extends State<HomePage> {
                             .currentState
                             ?.updateData(nextData);
                       });
+                      setState(() {
+
+                      });
                     }),
               ],
             )
@@ -276,6 +289,7 @@ class _HomePageState extends State<HomePage> {
               selectedIndex: selectedPageIndex,
               tabs: const [
                 GButton(icon: Icons.home, text: 'Home'),
+                GButton(icon: Icons.book, text: 'Diary'),
                 GButton(icon: Icons.lightbulb, text: 'Tips'),
               ]),
         ),

@@ -13,68 +13,44 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 class DiaryRepo {
   Future<void> saveDiary(List<DiaryEntry> diary) async {
     //if (kIsWeb) return;
-    if (Platform.isAndroid || kIsWeb) {
-      if (FirebaseAuth.instance.currentUser != null) {
-        final List<Map> mapedDiary =
-            []; //= diary.map((e) => e.toJson()).toList();
-        diary.forEach((element) {
-          mapedDiary.add(element.toJson());
-        });
 
-        final user = FirebaseAuth.instance.currentUser!;
-        final db = FirebaseFirestore.instance;
-        final diaryToSave = <String, dynamic>{
-          'user': locator.get<GetStorage>().read('weight'),
-          'diary': mapedDiary,
-        };
-        db.collection('diaries').doc(user.uid).set(diaryToSave);
-      }
-      if (Platform.isAndroid) locator.get<GetStorage>().write('Diary', diary);
-      return;
+    if (FirebaseAuth.instance.currentUser != null) {
+      final List<Map> mapedDiary =
+          []; //= diary.map((e) => e.toJson()).toList();
+      diary.forEach((element) {
+        mapedDiary.add(element.toJson());
+      });
+
+      final user = FirebaseAuth.instance.currentUser!;
+      final db = FirebaseFirestore.instance;
+      final diaryToSave = <String, dynamic>{
+        'user': locator.get<GetStorage>().read('weight'),
+        'diary': mapedDiary,
+      };
+      db.collection('diaries').doc(user.uid).set(diaryToSave);
     }
-    if (Platform.isWindows) {
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/.wodobro/diary.json');
-      await file.writeAsString(jsonEncode(diary));
-      return;
-    }
+    locator.get<GetStorage>().write('Diary', diary);
+    return;
+
   }
 
   Future<List<DiaryEntry>> loadDiary() async {
-    if (Platform.isAndroid) {
-      final diary = locator.get<GetStorage>().read('Diary');
-      if (diary == null) {
-        final user = FirebaseAuth.instance.currentUser!;
-        final db = FirebaseFirestore.instance;
-        final userDocRef = db.collection('diaries').doc(user.uid);
-        final doc = await userDocRef.get();
-        if (doc.exists) {
-          return doc
-              .data()?['diary']
-              .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))
-              .toList();
-        } else
-          return [];
-      } else if (diary.runtimeType == List<dynamic>)
-        return diary
+    final diary = locator.get<GetStorage>().read('Diary');
+    if (diary == null) {
+      final user = FirebaseAuth.instance.currentUser!;
+      final db = FirebaseFirestore.instance;
+      final userDocRef = db.collection('diaries').doc(user.uid);
+      final doc = await userDocRef.get();
+      if (doc.exists) {
+        return doc
+            .data()?['diary']
             .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))
             .toList();
-      else
-        return diary;
-    }
-    if (Platform.isWindows) {
-      final directory = await getApplicationDocumentsDirectory();
-      final file = File('${directory.path}/.wodobro/diary.json');
-      if (await file.exists()) {
-        final diary = jsonDecode(await file.readAsString());
-        return diary
-            .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))
-            .toList();
-      } else {
+      } else
         return [];
-      }
-    } else
-      return [];
+    }
+    else
+      return diary;
   }
 
   Future<void> addSip(String date, int amount, String? time) async {
