@@ -31,7 +31,6 @@ class DiaryRepo {
     }
     locator.get<GetStorage>().write('Diary', diary);
     return;
-
   }
 
   Future<List<DiaryEntry>> loadDiary() async {
@@ -48,8 +47,7 @@ class DiaryRepo {
             .toList();
       } else
         return [];
-    }
-    else
+    } else
       return diary;
   }
 

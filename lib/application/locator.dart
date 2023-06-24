@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:wodobro/data/diary_repo.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:wodobro/domain/hydration_controller.dart';
 import 'package:wodobro/domain/position_controller.dart';
 import 'package:wodobro/data/tips_repo.dart';
 import 'package:wodobro/domain/tips_controller.dart';
@@ -40,5 +41,6 @@ void setup() {
   locator.registerLazySingleton<TipsDomainController>(() => TipsDomainController());
   locator.registerLazySingleton<GetStorage>(() => box);
   locator.registerLazySingleton<PositionController>(() => PositionController());
+  locator.registerLazySingleton<HydrationController>(() => HydrationController());
   locator.registerLazySingleton<GlobalKey<AnimatedCircularChartState>>(() => _chartKey);
 }
