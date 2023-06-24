@@ -11,7 +11,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:wodobro/domain/position_controller.dart';
 import 'package:wodobro/data/tips_repo.dart';
 import 'package:wodobro/domain/tips_controller.dart';
+import '../domain/temperature_controller.dart';
 import 'auth_service.dart';
+import '../domain/notification_controller.dart';
 
 final locator = GetIt.instance;
 

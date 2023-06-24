@@ -12,9 +12,11 @@ import 'package:wodobro/presentation/pages/tips.dart';
 import 'dart:io' show Platform;
 
 import 'package:wodobro/presentation/intro/intro_page.dart';
-import 'package:wodobro/presentation/intro/intro_page2.dart';
-import 'package:wodobro/presentation/intro/intro_page3.dart';
+import 'package:wodobro/presentation/intro/intro_page2_weight.dart';
+import 'package:wodobro/presentation/intro/intro_page3_geolocation.dart';
 import 'package:wodobro/presentation/home_page.dart';
+
+import '../presentation/intro/intro_page4_notifications.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -23,9 +25,9 @@ final GoRouter goRouter = GoRouter(
   //navigatorKey: _rootNavigatorKey,
   initialLocation: (kIsWeb)
       ? '/auth/1'
-      : FirebaseAuth.instance.currentUser != null ?
-  locator.get<GetStorage>().read('initialLocation')
-      : '/auth/1',
+      : FirebaseAuth.instance.currentUser != null
+          ? locator.get<GetStorage>().read('initialLocation')
+          : '/auth/1',
   observers: [HeroController()],
   routes: [
     GoRoute(
@@ -42,6 +44,10 @@ final GoRouter goRouter = GoRouter(
         name: 'intro_3',
         path: '/intro/3',
         builder: (context, state) => IntroPage3()),
+    GoRoute(
+        name: 'intro_4',
+        path: '/intro/4',
+        builder: (context, state) => IntroPage4()),
     GoRoute(
         name: 'home', path: '/home', builder: (context, state) => HomePage()),
     GoRoute(
