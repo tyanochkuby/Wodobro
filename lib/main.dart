@@ -34,7 +34,7 @@ void main() async {
       overlays: [SystemUiOverlay.top]);
   await GetStorage.init();
   await Notifications.init();
-  await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
   setup();
   print('setup done');
   runApp(const Wodobro());

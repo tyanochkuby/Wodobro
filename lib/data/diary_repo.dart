@@ -31,27 +31,45 @@ class DiaryRepo {
     }
     locator.get<GetStorage>().write('Diary', diary);
     return;
-
   }
 
   Future<List<DiaryEntry>> loadDiary() async {
-    final diary = locator.get<GetStorage>().read('Diary');
-    if (diary == null) {
-      final user = FirebaseAuth.instance.currentUser!;
-      final db = FirebaseFirestore.instance;
-      final userDocRef = db.collection('diaries').doc(user.uid);
-      final doc = await userDocRef.get();
-      if (doc.exists) {
-        return doc
-            .data()?['diary']
+    if (Platform.isAndroid) {
+      final diary = locator.get<GetStorage>().read('Diary');
+      if (diary == null) {
+        final user = FirebaseAuth.instance.currentUser!;
+        final db = FirebaseFirestore.instance;
+        final userDocRef = db.collection('diaries').doc(user.uid);
+        final doc = await userDocRef.get();
+        if (doc.exists) {
+          return doc
+              .data()?['diary']
+              .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))
+              .toList();
+        } else
+          return [];
+      } else if (diary.runtimeType == List<dynamic>)
+        return diary
             .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))
             .toList();
-      } else
-        return [];
+      else
+        return diary;
     }
-    else
-      return diary;
+    if (Platform.isWindows) {
+      final directory = await getApplicationDocumentsDirectory();
+      final file = File('${directory.path}/.wodobro/diary.json');
+      if (await file.exists()) {
+        final diary = jsonDecode(await file.readAsString());
+        return diary
+            .map<DiaryEntry>((json) => DiaryEntry.fromJson(json))
+            .toList();
+      } else {
+        return [];
+      }
+    } else
+      return [];
   }
+
 
   Future<void> addSip(String date, int amount, String? time) async {
     final diary = await loadDiary();

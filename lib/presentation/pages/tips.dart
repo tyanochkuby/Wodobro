@@ -90,27 +90,55 @@ class _TipsPageState extends State<TipsPage> {
             ),
           ),
           SizedBox(height: 30),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              foregroundColor: Colors.white,
-              backgroundColor: Color.fromRGBO(66, 165, 245, 0.8),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
-              ),
-            ),
-            onPressed: () {
-              setState(() {
-                tip = locator.get<TipsDomainController>().getRandomTip();
-              });
-            },
+          SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Next tip',
-                style: TextStyle(fontSize: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 58.0, vertical: 24),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: () async {
+                  setState(() {
+                    tip = locator.get<TipsDomainController>().getRandomTip();
+                  });
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.2),
+                  child: Text(
+                    'Next tip',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          color: const Color.fromRGBO(245, 245, 247, 0.9),
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
               ),
             ),
-          )
+          ),
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     foregroundColor: Colors.white,
+          //     backgroundColor: Color.fromRGBO(66, 165, 245, 0.8),
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(32.0),
+          //     ),
+          //   ),
+          //   onPressed: () {
+          //     setState(() {
+          //       tip = locator.get<TipsDomainController>().getRandomTip();
+          //     });
+          //   },
+          //   child: Padding(
+          //     padding: const EdgeInsets.all(8.0),
+          //     child: Text(
+          //       'Next tip',
+          //       style: TextStyle(fontSize: 30),
+          //     ),
+          //   ),
+          // )
         ]));
   }
 }
