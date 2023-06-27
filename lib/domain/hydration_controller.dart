@@ -4,15 +4,25 @@ import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/temperature_controller.dart';
 
 class HydrationController{
-  void estimateTodayHydration() async{
-    if(locator.get<GetStorage>().read('additionalWater') == null || locator.get<GetStorage>().read('lastTimeEstimated') != DateUtils.dateOnly(DateTime.now())) {
+  static Future<int> estimateTodayHydration() async{
+    if(locator.get<GetStorage>().read('lastTimeEstimated') != DateUtils.dateOnly(DateTime.now())) {
       final double maxTemperature = await TemperatureDomainController.getTodayMaxTemperature();
-      if(maxTemperature > 15)
-        locator.get<GetStorage>().write('additionalWater', ((maxTemperature-15).floor() * 40));
-      else
+      if(maxTemperature > 15) {
+        locator.get<GetStorage>().write(
+            'lastTimeEstimated', DateUtils.dateOnly(DateTime.now()));
+        final int additionalWater = (maxTemperature - 15).floor() * 40;
+        locator.get<GetStorage>().write('additionalWater', additionalWater);
+        return additionalWater;
+      }
+      else {
+        locator.get<GetStorage>().write(
+            'lastTimeEstimated', DateUtils.dateOnly(DateTime.now()));
         locator.get<GetStorage>().write('additionalWater', 0);
-      locator.get<GetStorage>().write('lastTimeEstimated', DateUtils.dateOnly(DateTime.now()));
-      return;
+        return 0;
+      }
+    }
+    else{
+      return locator.get<GetStorage>().read('additionalWater');
     }
   }
 }

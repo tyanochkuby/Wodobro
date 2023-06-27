@@ -18,7 +18,7 @@ class IntroPage4 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: LavaAnimation(
-        color: Theme.of(context).colorScheme.primary,
+        color: Color.fromRGBO(142, 201, 249, 1),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 0.9,

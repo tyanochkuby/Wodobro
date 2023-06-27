@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 import 'package:wodobro/application/locator.dart';
+import 'package:wodobro/domain/hydration_controller.dart';
+import 'package:wodobro/domain/view%20models/homepage_viewmodel.dart';
 import 'package:wodobro/presentation/pages/diary.dart';
 import 'package:wodobro/presentation/pages/tips.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
@@ -32,7 +35,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: selectedPageIndex == 1 ? Colors.blueGrey[200] : Colors.white,
+      backgroundColor:
+          selectedPageIndex == 1 ? Colors.blueGrey[200] : Colors.white,
       body: selectedPageIndex == 0
           ? Center(
               child: Column(
@@ -48,8 +52,13 @@ class _HomePageState extends State<HomePage> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting)
-                                return Center(
-                                    child: CircularProgressIndicator());
+                                return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 14.0, vertical: 8.0),
+                                    child: LoadingAnimationWidget.waveDots(
+                                      color: Colors.white,
+                                      size: 50,
+                                    ));
                               else if (snapshot.hasError)
                                 return Text('Error: ${snapshot.error}');
                               else {
@@ -63,23 +72,28 @@ class _HomePageState extends State<HomePage> {
                               } // else
                               //   return Text('Not logged in');
                             }),
-                        FutureBuilder<int>(
-                            future: locator
-                                .get<DiaryDomainController>()
-                                .getTodayHydration(),
+                        FutureBuilder<List<int>>(
+                            future: HomePageViewModel().homePageViewModel(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting)
-                                return Text('Loading....');
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 14.0, vertical: 8.0),
+                                  child: LoadingAnimationWidget.waveDots(
+                                    color: Colors.white,
+                                    size: 50,
+                                  ));
                               else {
                                 if (snapshot.error != null)
                                   return Text('Error: ${snapshot.error}');
                                 else {
                                   final double drunk =
-                                      snapshot.data!.toDouble();
+                                      snapshot.data![1].toDouble();
                                   locator
                                       .get<GetStorage>()
                                       .write('drunk', drunk);
+                                  final int additionalWater = snapshot.data![0];
                                   return Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
@@ -113,7 +127,8 @@ class _HomePageState extends State<HomePage> {
                                                     locator
                                                             .get<GetStorage>()
                                                             .read(
-                                                                'waterForDay') -
+                                                                'waterForDay') +
+                                                        additionalWater -
                                                         drunk,
                                                     Colors.blueGrey[600],
                                                     rankKey: 'remaining',
@@ -124,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                                             chartType: CircularChartType.Radial,
                                             edgeStyle: SegmentEdgeStyle.round,
                                             holeLabel:
-                                                '${locator.get<GetStorage>().read('drunk')} / ${locator.get<GetStorage>().read('waterForDay')} ml',
+                                                '${drunk.toInt()/*locator.get<GetStorage>().read('drunk')*/} / ${locator.get<GetStorage>().read('waterForDay') + additionalWater} ml',
                                             labelStyle: new TextStyle(
                                               color: Colors.blueGrey[600],
                                               fontWeight: FontWeight.bold,
@@ -188,9 +203,7 @@ class _HomePageState extends State<HomePage> {
                           .currentState
                           ?.updateData(nextData);
                     });
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                 ),
                 SpeedDialChild(
@@ -226,9 +239,7 @@ class _HomePageState extends State<HomePage> {
                             .currentState
                             ?.updateData(nextData);
                       });
-                      setState(() {
-
-                      });
+                      setState(() {});
                     }),
                 SpeedDialChild(
                     child: Text('500 ml',
@@ -263,9 +274,7 @@ class _HomePageState extends State<HomePage> {
                             .currentState
                             ?.updateData(nextData);
                       });
-                      setState(() {
-
-                      });
+                      setState(() {});
                     }),
               ],
             )

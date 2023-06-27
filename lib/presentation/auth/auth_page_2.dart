@@ -23,14 +23,27 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Text('Register Page'),
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 8.0, bottom: 30),
+            child: Text('To continue please tap the button below :)',
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    color: Colors.black38, fontWeight: FontWeight.bold)),
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 12),
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(142, 201, 249, 0.8),
+              padding: const EdgeInsets.all(18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+            ),
             onPressed: () async {
               setState(() {});
 
@@ -72,13 +85,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   context.go('/intro/1');
               }
             },
-            style: ButtonStyle(
-              elevation: MaterialStateProperty.all<double>(6.0),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8))),
-              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

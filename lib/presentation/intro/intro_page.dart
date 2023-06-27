@@ -28,7 +28,7 @@ class IntroPage1 extends StatelessWidget {
               children: [
                 Text('Wodobro',
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                        color: const Color.fromRGBO(2, 0, 117, 1.0),
+                        color: const Color.fromRGBO(142, 201, 249, 1),
                         fontWeight: FontWeight.bold)),
                 Text('A simply way to track your water intake',
                     style: Theme.of(context)
