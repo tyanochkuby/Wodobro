@@ -1,7 +1,6 @@
 import 'package:workmanager/workmanager.dart';
 import 'package:wodobro/domain/notification_controller.dart';
 import '../domain/temperature_controller.dart';
-import 'package:wodobro/application/locator.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
