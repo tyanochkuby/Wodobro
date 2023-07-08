@@ -2,12 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:permission_handler/permission_handler.dart' as perm_handler;
 import 'package:timezone/standalone.dart' as tz;
-import 'package:wodobro/domain/temperature_controller.dart';
 import 'package:workmanager/workmanager.dart';
 
 import '../application/locator.dart';
