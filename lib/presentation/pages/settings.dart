@@ -21,13 +21,15 @@ class SettingsPage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          WodobroTextField(
-            controller: weightController,
-            hintText: 'Enter new weight',
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp(r"[\d]"))
-            ],
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: WodobroTextField(
+              controller: weightController,
+              keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r"[\d]"))
+              ],
+            ),
           ),
           ElevatedButton(
             onPressed: () {

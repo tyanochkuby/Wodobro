@@ -10,6 +10,7 @@ import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/hydration_controller.dart';
 import 'package:wodobro/domain/view%20models/homepage_viewmodel.dart';
 import 'package:wodobro/presentation/pages/diary.dart';
+import 'package:wodobro/presentation/pages/settings.dart';
 import 'package:wodobro/presentation/pages/tips.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:wodobro/presentation/pages/home.dart';
@@ -34,6 +35,7 @@ class _HomePageState extends State<HomePage> {
     Home(),
     //DiaryPage(),
     TipsPage(),
+    SettingsPage(),
   ];
   TextEditingController otherAmountController = TextEditingController();
 
@@ -224,7 +226,11 @@ class _HomePageState extends State<HomePage> {
             )
           : selectedPageIndex == 1
               ? DiaryPage(context)
-              : TipsPage(),
+              : selectedPageIndex == 2
+                  ? TipsPage()
+                  : selectedPageIndex == 3
+                      ? SettingsPage()
+                      : const Text('selectedpageindex Error'),
       floatingActionButton: selectedPageIndex == 0
           ? SpeedDial(
               icon: Icons.add,
@@ -408,6 +414,7 @@ class _HomePageState extends State<HomePage> {
                 GButton(icon: Icons.home, text: 'Home'),
                 GButton(icon: Icons.book, text: 'Diary'),
                 GButton(icon: Icons.lightbulb, text: 'Tips'),
+                GButton(icon: Icons.settings, text: 'Settings'),
               ]),
         ),
       ),
