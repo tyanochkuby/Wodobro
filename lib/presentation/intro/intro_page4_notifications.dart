@@ -46,33 +46,59 @@ class IntroPage4 extends StatelessWidget {
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 24),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-            ),
-            onPressed: () async {
-              final perm_handler.PermissionStatus status =
-                  await perm_handler.Permission.notification.request();
-              if (status.isGranted) {
-                TimeOfDay? selectedTime = null;
-                while (selectedTime == null) {
-                  selectedTime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-                }
-                Notifications.registerDailyForecastNotifications(
-                    time: selectedTime);
+          child: Row(
+            children: [
+              const Spacer(flex: 2,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: () async {
+                  final perm_handler.PermissionStatus status =
+                      await perm_handler.Permission.notification.request();
+                  if (status.isGranted) {
+                    TimeOfDay? selectedTime = null;
+                    while (selectedTime == null) {
+                      selectedTime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                    }
+                    Notifications.registerDailyForecastNotifications(
+                        time: selectedTime);
 
-                locator.get<GetStorage>().write('initialLocation', '/home');
-                context.go('/home');
-              }
-            },
-            child: Text('Yep, ask for permission',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: const Color.fromRGBO(245, 245, 247, 0.9),
-                fontWeight: FontWeight.bold,
-              ),),
+                    locator.get<GetStorage>().write('initialLocation', '/home');
+                    locator.get<GetStorage>().write('enableNotifications', true);
+                    context.go('/home');
+                  }
+                },
+                child: Text('Yep, ask for permission',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: const Color.fromRGBO(245, 245, 247, 0.9),
+                    fontWeight: FontWeight.bold,
+                  ),),
+              ),
+              const Spacer(flex: 1,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: () async {
+                    locator.get<GetStorage>().write('initialLocation', '/home');
+                    locator.get<GetStorage>().write('enableNotifications', false);
+                    context.go('/home');
+                },
+                child: Text("No, don't send me notifications",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: const Color.fromRGBO(245, 245, 247, 0.9),
+                    fontWeight: FontWeight.bold,
+                  ),),
+              ),
+              const Spacer(flex: 2,),
+            ],
           ),
         ),
       ),

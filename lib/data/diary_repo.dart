@@ -71,7 +71,7 @@ class DiaryRepo {
   }
 
 
-  Future<void> addSip(String date, int amount, String? time) async {
+  Future<List<DiaryEntry>> addSip(String date, int amount, String? time) async {
     final diary = await loadDiary();
     if (time == null) time = DateFormat('HH:mm').format(DateTime.now());
     if (date == "today") date = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -82,13 +82,7 @@ class DiaryRepo {
     diary.removeWhere((oldEntry) => oldEntry.date == date);
     diary.add(entry);
     await saveDiary(diary);
+    return diary;
   }
 
-  Future<DiaryEntry> getEntryByDay(String date) async {
-    final diary = await loadDiary();
-    if (date == "today") date = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    final entry = diary.firstWhere((entry) => entry.date == date,
-        orElse: () => DiaryEntry(date: date, sips: []));
-    return entry;
-  }
 }
