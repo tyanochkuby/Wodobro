@@ -6,15 +6,15 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wodobro/data/diary_repo.dart';
+import 'package:wodobro/data/weight_repo.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:wodobro/domain/hydration_controller.dart';
 import 'package:wodobro/domain/position_controller.dart';
 import 'package:wodobro/data/tips_repo.dart';
 import 'package:wodobro/domain/tips_controller.dart';
-import '../domain/temperature_controller.dart';
+import 'package:wodobro/domain/weight_controller.dart';
 import 'auth_service.dart';
-import '../domain/notification_controller.dart';
 
 final locator = GetIt.instance;
 
@@ -39,6 +39,7 @@ void setup() {
   locator.registerLazySingleton<DiaryDomainController>(
       () => DiaryDomainController());
   locator.registerLazySingleton<TipsDomainController>(() => TipsDomainController());
+  locator.registerLazySingleton<WeightDomainController>(() => WeightDomainController());
   locator.registerLazySingleton<GetStorage>(() => box);
   locator.registerLazySingleton<PositionController>(() => PositionController());
   locator.registerLazySingleton<HydrationController>(() => HydrationController());

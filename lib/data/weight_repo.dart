@@ -7,7 +7,7 @@ import 'package:wodobro/domain/diary_controller.dart';
 import '../application/locator.dart';
 
 class WeightRepo{
-  Future<double> getWeight() async{
+  static Future<double> getWeight() async{
     final tips = locator.get<GetStorage>().read('weight');
     if (tips == null && FirebaseAuth.instance.currentUser != null) {
       final db = FirebaseFirestore.instance;
@@ -22,7 +22,7 @@ class WeightRepo{
     else return 0.0;
   }
 
-  Future<void> setWeight(double weight) async{
+  static Future<void> setWeight(double weight) async{
     final user = FirebaseAuth.instance.currentUser!;
     final db = FirebaseFirestore.instance;
     final diary = await locator.get<DiaryDomainController>().getDiary();
