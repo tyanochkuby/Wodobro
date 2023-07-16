@@ -69,6 +69,7 @@ class IntroPage4 extends StatelessWidget {
 
                     locator.get<GetStorage>().write('initialLocation', '/home');
                     locator.get<GetStorage>().write('enableNotifications', true);
+                    locator.get<GetStorage>().write('notificationsTime', selectedTime);
                     context.go('/home');
                   }
                 },
@@ -89,6 +90,7 @@ class IntroPage4 extends StatelessWidget {
                 onPressed: () async {
                     locator.get<GetStorage>().write('initialLocation', '/home');
                     locator.get<GetStorage>().write('enableNotifications', false);
+                    locator.get<GetStorage>().write('notificationsTime', null);
                     context.go('/home');
                 },
                 child: Text("No, don't send me notifications",

@@ -52,6 +52,10 @@ class Notifications {
         constraints: Constraints(networkType: NetworkType.connected));
   }
 
+  static Future<void> unsubscribeDailyForecastNotifications() async {
+    await Workmanager().cancelByUniqueName('dailyForecastNotifications');
+  }
+
   static Future<void> showNotification({
     int id = 0,
     String? title,

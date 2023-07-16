@@ -15,6 +15,7 @@ class WeightDomainController{
     return;
 
   }
+
   Future<double> getWeight() async{
     if(weight == null)
       weight = await WeightRepo.getWeight();
