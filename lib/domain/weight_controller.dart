@@ -11,6 +11,7 @@ class WeightDomainController{
   Future<void> setWeight(double newWeight) async{
     weight = newWeight;
     locator.get<GetStorage>().write('weight', weight);
+    locator.get<GetStorage>().write('waterForDay', weight!.floor() * 30);
     WeightRepo.setWeight(weight!);
     return;
 

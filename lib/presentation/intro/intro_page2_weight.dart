@@ -6,6 +6,8 @@ import 'package:wodobro/presentation/widgets/lava.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:wodobro/presentation/widgets/wodobro_text_field.dart';
 
+import '../../domain/weight_controller.dart';
+
 
 class IntroPage2 extends StatefulWidget {
   const IntroPage2({super.key});
@@ -67,10 +69,7 @@ class _IntroPage2State extends State<IntroPage2> {
               onPressed: () {
                 setState(() {
                   if (!weightController.text.isEmpty) {
-                    locator
-                        .get<GetStorage>().write('weight', int.parse(weightController.text));
-                    locator.get<GetStorage>().write(
-                        'waterForDay', int.parse(weightController.text) * 30);
+                    locator.get<WeightDomainController>().setWeight(double.parse(weightController.text));
                     context.push('/intro/3');
                   }
                 });
