@@ -45,10 +45,10 @@ class IntroPage4 extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 24),
           child: Row(
             children: [
-              const Spacer(flex: 2,),
+              //const Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
@@ -73,19 +73,27 @@ class IntroPage4 extends StatelessWidget {
                     context.go('/home');
                   }
                 },
-                child: Text('Yep, ask for permission',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: const Color.fromRGBO(245, 245, 247, 0.9),
-                    fontWeight: FontWeight.bold,
-                  ),),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.37,
+                  child: Text('Yep, ask\nfor permission',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: const Color.fromRGBO(245, 245, 247, 0.9),
+                      fontWeight: FontWeight.bold,
+                    ),),
+                ),
               ),
-              const Spacer(flex: 1,),
+              const Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(142, 201, 249, 1),
+                    width: 2,
+                  ),
+                  backgroundColor: const Color.fromRGBO(245, 245, 247, 0.9),
                 ),
                 onPressed: () async {
                     locator.get<GetStorage>().write('initialLocation', '/home');
@@ -93,13 +101,16 @@ class IntroPage4 extends StatelessWidget {
                     locator.get<GetStorage>().write('notificationsTime', null);
                     context.go('/home');
                 },
-                child: Text("No, don't send me notifications",
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: const Color.fromRGBO(245, 245, 247, 0.9),
-                    fontWeight: FontWeight.bold,
-                  ),),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.37,
+                  child: Text("No, don't send\nme notifications",
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: const Color.fromRGBO(45, 45, 47, 0.9),
+                      fontWeight: FontWeight.bold,
+                    ),),
+                ),
               ),
-              const Spacer(flex: 2,),
+              //const Spacer(),
             ],
           ),
         ),

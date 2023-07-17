@@ -17,12 +17,12 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final TextEditingController weightController = TextEditingController();
-  @override
-  void initState() async {
-    super.initState();
-    weightController.text =
-        await locator.get<WeightDomainController>().getWeight().toString();
-  }
+  // @override
+  // void initState() async {
+  //   super.initState();
+  //   weightController.text =
+  //       await locator.get<WeightDomainController>().getWeight().toString();
+  // }
 
   bool areNotificationsEnabledSwitcher =
       locator.get<GetStorage>().read('enableNotifications');
@@ -33,14 +33,34 @@ class _SettingsPageState extends State<SettingsPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 150),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: WodobroTextField(
-              controller: weightController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[\d]"))
-              ],
+            child: FutureBuilder<double>(
+              future: locator.get<WeightDomainController>().getWeight(),
+              builder: (context, snapshot) {
+                switch(snapshot.connectionState)
+                {
+                  case ConnectionState.waiting:
+                    return const Center(child: CircularProgressIndicator());
+                  default:
+                    if(snapshot.hasError)
+                      return Padding(
+                padding: const EdgeInsets.symmetric(
+                horizontal: 14.0, vertical: 8.0),
+                child: Text('Error: ${snapshot.error}'));
+                    else {
+                      weightController.text = snapshot.data.toString();
+                      return WodobroTextField(
+                        controller: weightController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r"[\d]"))
+                        ],
+                      );
+                    }
+                }
+              }
             ),
           ),
           Padding(
