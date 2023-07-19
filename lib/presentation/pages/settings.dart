@@ -9,8 +9,11 @@ import 'package:wodobro/presentation/widgets/wodobro_text_field.dart';
 import '../../application/locator.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  //const SettingsPage({super.key});
 
+  bool areNotificationsEnabledSwitcher = locator.get<GetStorage>().read('enableNotifications');
+  bool _stateInited = false;
+  TimeOfDay? selectedTime = locator.get<GetStorage>().read('notificationsTime');
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
@@ -24,10 +27,13 @@ class _SettingsPageState extends State<SettingsPage> {
   //       await locator.get<WeightDomainController>().getWeight().toString();
   // }
 
-  bool areNotificationsEnabledSwitcher =
-      locator.get<GetStorage>().read('enableNotifications');
-  bool _stateInited = false;
-  TimeOfDay? selectedTime = locator.get<GetStorage>().read('notificationsTime');
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    locator.get<GetStorage>().listenKey('enableNotifications', (value) { print('notifications enabled: $value');});
+    locator.get<GetStorage>().listenKey('notificationsTime', (value) { print('notifications time: $value');});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 150),
-            _stateInited
+            widget._stateInited
                 ? TextField(
                     controller: weightController,
                     keyboardType: TextInputType.number,
@@ -72,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: Text('Error: ${snapshot.error}'));
                           else {
                             weightController.text = snapshot.data.toString();
-                            _stateInited = true;
+                            widget._stateInited = true;
                             return WodobroTextField(
                               controller: weightController,
                               keyboardType: TextInputType.number,
@@ -93,12 +99,12 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 const Spacer(),
                 CupertinoSwitch(
-                    value: areNotificationsEnabledSwitcher,
+                    value: widget.areNotificationsEnabledSwitcher,
                     onChanged: (bool switcherNewState) {
                       setState(() {
-                        areNotificationsEnabledSwitcher = switcherNewState;
+                        widget.areNotificationsEnabledSwitcher = switcherNewState;
                       });
-                      if (areNotificationsEnabledSwitcher == true) {
+                      if (widget.areNotificationsEnabledSwitcher == true) {
                         enableNotifications(context);
                       } else {
                         disableNotifications();
@@ -112,13 +118,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 Text('Pick time',
                     style: Theme.of(context).textTheme.titleMedium),
                 const Spacer(),
-                Text(selectedTime == null
+                Text(widget.selectedTime == null
                     ? 'Not selected'
-                    : '${selectedTime!.hour}:${selectedTime!.minute}'),
+                    : '${widget.selectedTime!.hour}:${widget.selectedTime!.minute}'),
                 GestureDetector(
                     child: Icon(Icons.access_time_filled),
                     onTap: () async{
-                      selectedTime = await changeNotificationsTime(context);
+                      widget.selectedTime = await changeNotificationsTime(context);
                       setState(() {
 
                       });
@@ -170,18 +176,18 @@ Future<void> enableNotifications(BuildContext context) async {
     }
     Notifications.registerDailyForecastNotifications(time: selectedTime);
 
-    locator.get<GetStorage>().write('enableNotifications', true);
-    locator.get<GetStorage>().write('notificationsTime', selectedTime);
+    await locator.get<GetStorage>().write('enableNotifications', true);
+    await locator.get<GetStorage>().write('notificationsTime', selectedTime);
   } else {
     Notifications.registerDailyForecastNotifications(
         time: locator.get<GetStorage>().read('notificationsTime'));
-    locator.get<GetStorage>().write('enableNotifications', true);
+    await locator.get<GetStorage>().write('enableNotifications', true);
   }
 }
 
 Future<void> disableNotifications() async {
   Notifications.unsubscribeDailyForecastNotifications();
-  locator.get<GetStorage>().write('enableNotifications', false);
+  await locator.get<GetStorage>().write('enableNotifications', false);
 }
 
 Future<TimeOfDay> changeNotificationsTime(BuildContext context) async {
@@ -194,6 +200,6 @@ Future<TimeOfDay> changeNotificationsTime(BuildContext context) async {
     Notifications.unsubscribeDailyForecastNotifications();
     Notifications.registerDailyForecastNotifications(time: selectedTime);
   }
-  locator.get<GetStorage>().write('notificationsTime', selectedTime);
+  await locator.get<GetStorage>().write('notificationsTime', selectedTime);
   return selectedTime;
 }
