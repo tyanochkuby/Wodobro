@@ -26,91 +26,108 @@ class _SettingsPageState extends State<SettingsPage> {
 
   bool areNotificationsEnabledSwitcher =
       locator.get<GetStorage>().read('enableNotifications');
+  bool _stateInited = false;
+  TimeOfDay? selectedTime = locator.get<GetStorage>().read('notificationsTime');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 150),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18.0),
-            child: FutureBuilder<double>(
-              future: locator.get<WeightDomainController>().getWeight(),
-              builder: (context, snapshot) {
-                switch(snapshot.connectionState)
-                {
-                  case ConnectionState.waiting:
-                    return const Center(child: CircularProgressIndicator());
-                  default:
-                    if(snapshot.hasError)
-                      return Padding(
-                padding: const EdgeInsets.symmetric(
-                horizontal: 14.0, vertical: 8.0),
-                child: Text('Error: ${snapshot.error}'));
-                    else {
-                      weightController.text = snapshot.data.toString();
-                      return WodobroTextField(
-                        controller: weightController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r"[\d]"))
-                        ],
-                      );
-                    }
-                }
-              }
-            ),
-          ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: Row(
-                children: [
-                  Text(
-                    'Daily reminders',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Text(
-                        'Enable daily notifications',
-                        style: Theme.of(context).textTheme.titleMedium,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: 150),
+            _stateInited
+                ? TextField(
+                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r"[\d]"))
+                    ],
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
                       ),
-                      const Spacer(),
-                      CupertinoSwitch(
-                          value: areNotificationsEnabledSwitcher,
-                          onChanged: (bool switcherNewState) {
-                            setState(() {
-                              areNotificationsEnabledSwitcher =
-                                  switcherNewState;
-                            });
-                            if (areNotificationsEnabledSwitcher == true) {
-                              enableNotifications(context);
-                            } else {
-                              disableNotifications();
-                            }
-                          }),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Pick time'),
-                      const Spacer(),
-                      Text(
-                          "${locator.get<GetStorage>().read('notificationsTime')}"),
-                      GestureDetector(
-                        child: Icon(Icons.access_time_filled),
-                        onTap: () => setState(() {
-                          changeNotificationsTime(context);
-                        })
-                      )
-                    ],
-                  )
-                ],
-              )),
-        ],
+                      filled: true,
+                      contentPadding: EdgeInsets.all(16),
+                    )
+            )
+                : FutureBuilder<double>(
+                    future: locator.get<WeightDomainController>().getWeight(),
+                    builder: (context, snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.waiting:
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        default:
+                          if (snapshot.hasError)
+                            return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 14.0, vertical: 8.0),
+                                child: Text('Error: ${snapshot.error}'));
+                          else {
+                            weightController.text = snapshot.data.toString();
+                            _stateInited = true;
+                            return WodobroTextField(
+                              controller: weightController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r"[\d]"))
+                              ],
+                            );
+                          }
+                      }
+                    }),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  'Enable daily notifications',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const Spacer(),
+                CupertinoSwitch(
+                    value: areNotificationsEnabledSwitcher,
+                    onChanged: (bool switcherNewState) {
+                      setState(() {
+                        areNotificationsEnabledSwitcher = switcherNewState;
+                      });
+                      if (areNotificationsEnabledSwitcher == true) {
+                        enableNotifications(context);
+                      } else {
+                        disableNotifications();
+                      }
+                    }),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text('Pick time',
+                    style: Theme.of(context).textTheme.titleMedium),
+                const Spacer(),
+                Text(selectedTime == null
+                    ? 'Not selected'
+                    : '${selectedTime!.hour}:${selectedTime!.minute}'),
+                GestureDetector(
+                    child: Icon(Icons.access_time_filled),
+                    onTap: () async{
+                      selectedTime = await changeNotificationsTime(context);
+                      setState(() {
+
+                      });
+                    })
+
+              ],
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: SafeArea(
           child: Padding(
@@ -126,6 +143,7 @@ class _SettingsPageState extends State<SettingsPage> {
             locator
                 .get<WeightDomainController>()
                 .setWeight(double.parse(weightController.text));
+            FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Text(
             'Save',
@@ -166,7 +184,7 @@ Future<void> disableNotifications() async {
   locator.get<GetStorage>().write('enableNotifications', false);
 }
 
-Future<void> changeNotificationsTime(BuildContext context) async {
+Future<TimeOfDay> changeNotificationsTime(BuildContext context) async {
   TimeOfDay? selectedTime = null;
   while (selectedTime == null) {
     selectedTime =
@@ -177,4 +195,5 @@ Future<void> changeNotificationsTime(BuildContext context) async {
     Notifications.registerDailyForecastNotifications(time: selectedTime);
   }
   locator.get<GetStorage>().write('notificationsTime', selectedTime);
+  return selectedTime;
 }

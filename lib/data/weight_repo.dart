@@ -8,18 +8,18 @@ import '../application/locator.dart';
 
 class WeightRepo{
   static Future<double> getWeight() async{
-    final tips = locator.get<GetStorage>().read('weight');
-    if (tips == null && FirebaseAuth.instance.currentUser != null) {
+    double weight = locator.get<GetStorage>().read('weight');
+    if (FirebaseAuth.instance.currentUser != null) {
       final db = FirebaseFirestore.instance;
       final userDocRef = db.collection('diaries').doc(FirebaseAuth.instance.currentUser!.uid);
       final doc = await userDocRef.get();
       if (doc.exists) {
-        final weight = (doc.data()?['user']).cast<double>();
+        weight = (doc.data()?['user']);
         return weight;
       } else
         return 0.0;
     }
-    else return 0.0;
+  else return weight;
   }
 
   static Future<void> setWeight(double weight) async{
