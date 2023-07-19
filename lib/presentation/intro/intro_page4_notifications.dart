@@ -45,34 +45,73 @@ class IntroPage4 extends StatelessWidget {
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 24),
-          child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.all(18),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-            ),
-            onPressed: () async {
-              final perm_handler.PermissionStatus status =
-                  await perm_handler.Permission.notification.request();
-              if (status.isGranted) {
-                TimeOfDay? selectedTime = null;
-                while (selectedTime == null) {
-                  selectedTime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
-                }
-                Notifications.registerDailyForecastNotifications(
-                    time: selectedTime);
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 24),
+          child: Row(
+            children: [
+              //const Spacer(),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                ),
+                onPressed: () async {
+                  final perm_handler.PermissionStatus status =
+                      await perm_handler.Permission.notification.request();
+                  if (status.isGranted) {
+                    TimeOfDay? selectedTime = null;
+                    while (selectedTime == null) {
+                      selectedTime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                    }
+                    Notifications.registerDailyForecastNotifications(
+                        time: selectedTime);
 
-                locator.get<GetStorage>().write('initialLocation', '/home');
-                context.go('/home');
-              }
-            },
-            child: Text('Yep, ask for permission',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: const Color.fromRGBO(245, 245, 247, 0.9),
-                fontWeight: FontWeight.bold,
-              ),),
+                    locator.get<GetStorage>().write('initialLocation', '/home');
+                    locator.get<GetStorage>().write('enableNotifications', true);
+                    locator.get<GetStorage>().write('notificationsTime', selectedTime);
+                    context.go('/home');
+                  }
+                },
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.37,
+                  child: Text('Yep, ask\nfor permission',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: const Color.fromRGBO(245, 245, 247, 0.9),
+                      fontWeight: FontWeight.bold,
+                    ),),
+                ),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  side: const BorderSide(
+                    color: Color.fromRGBO(142, 201, 249, 1),
+                    width: 2,
+                  ),
+                  backgroundColor: const Color.fromRGBO(245, 245, 247, 0.9),
+                ),
+                onPressed: () async {
+                    locator.get<GetStorage>().write('initialLocation', '/home');
+                    locator.get<GetStorage>().write('enableNotifications', false);
+                    locator.get<GetStorage>().write('notificationsTime', null);
+                    context.go('/home');
+                },
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.37,
+                  child: Text("No, don't send\nme notifications",
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: const Color.fromRGBO(45, 45, 47, 0.9),
+                      fontWeight: FontWeight.bold,
+                    ),),
+                ),
+              ),
+              //const Spacer(),
+            ],
           ),
         ),
       ),

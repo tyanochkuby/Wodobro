@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:wodobro/application/locator.dart';
 import 'dart:io';
 import 'package:wodobro/application/routes.dart';
@@ -20,6 +20,8 @@ void main() async {
         options: DefaultFirebaseOptions.currentPlatform);
   } catch (e) {}
   print('firebase inited');
+  await FlutterDisplayMode.setHighRefreshRate();
+
 
   //Setting SysemUIOverlay
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

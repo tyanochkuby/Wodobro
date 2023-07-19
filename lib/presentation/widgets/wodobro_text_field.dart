@@ -44,7 +44,7 @@ class WodobroTextField extends StatelessWidget{
   const WodobroTextField({
     super.key,
     required this.controller,
-    required this.hintText,
+    this.hintText,
     required this.keyboardType,
     this.validator,
     this.onChanged,
@@ -53,7 +53,7 @@ class WodobroTextField extends StatelessWidget{
     this.inputFormatters,
   });
   final TextEditingController controller;
-  final String hintText;
+  final String? hintText;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final String? label;

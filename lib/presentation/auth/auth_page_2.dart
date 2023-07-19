@@ -60,7 +60,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Map<String, dynamic>? data = doc.data();
                   // final diary = doc.data()?['diary'];
                   print(doc.data()?['user']);
-                  int weight = doc.data()?['user'];
+                  double weight = doc.data()?['user'];
                   locator.get<GetStorage>().write('weight', weight);
                   locator.get<GetStorage>().write('waterForDay', weight * 30);
                   if (await PositionController.checkPermissionGranted()) {
