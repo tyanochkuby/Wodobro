@@ -1,14 +1,13 @@
-import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:get_storage/get_storage.dart';
 
-import 'package:http/http.dart' as http;
+main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  GetStorage.init();
+  final box = GetStorage('test');
 
-main() async {
-  http.Client client = http.Client();
-  double longitude = 52.40;
-  double latitude = 16.92;
-  final String url = 'https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&daily=temperature_2m_max&forecast_days=1&timezone=Europe%2FBerlin';
-  final response = await client.get(Uri.parse(url));
-  Map<String, dynamic> forecastMap = await json.decode(response.body);
-  double maxTemp = forecastMap['daily']['temperature_2m_max'][0];
-  print(maxTemp);
+  // box.write('Hour', 18);
+  // box.write('Minute', 47);
+  print('hour: ${box.read('Hour')}, minute: ${box.read('Minute')}');
+
 }

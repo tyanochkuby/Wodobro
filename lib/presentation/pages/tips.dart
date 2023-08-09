@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:wodobro/application/locator.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wodobro/domain/tips_controller.dart';
-import 'package:wodobro/presentation/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -92,7 +89,8 @@ class _TipsPageState extends State<TipsPage> {
           SizedBox(height: 30),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 58.0, vertical: 24),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 58.0, vertical: 24),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
@@ -106,7 +104,8 @@ class _TipsPageState extends State<TipsPage> {
                   });
                 },
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.2),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.2),
                   child: Text(
                     'Next tip',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(

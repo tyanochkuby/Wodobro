@@ -5,14 +5,9 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../application/locator.dart';
 import '../../domain/diary_controller.dart';
-import '../../domain/tips_controller.dart';
 import '../widgets/lava.dart';
-//
 
-
-
-
-Widget Home(){
+Widget Home() {
   return Center(
     child: Column(
       children: [
@@ -39,9 +34,8 @@ Widget Home(){
                     //   return Text('Not logged in');
                   }),
               FutureBuilder<int>(
-                  future: locator
-                      .get<DiaryDomainController>()
-                      .getTodayHydration(),
+                  future:
+                      locator.get<DiaryDomainController>().getTodayHydration(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting)
                       return Text('Loading....',
@@ -56,7 +50,8 @@ Widget Home(){
                         final double drunk = snapshot.data!.toDouble();
                         locator.get<GetStorage>().write('drunk', drunk);
                         return AnimatedCircularChart(
-                          key: locator.get<GlobalKey<AnimatedCircularChartState>>(),
+                          key: locator
+                              .get<GlobalKey<AnimatedCircularChartState>>(),
                           size: Size(300.0, 300.0),
                           initialChartData: <CircularStackEntry>[
                             new CircularStackEntry(
@@ -68,8 +63,8 @@ Widget Home(){
                                 ),
                                 new CircularSegmentEntry(
                                   locator
-                                      .get<GetStorage>()
-                                      .read('waterForDay') -
+                                          .get<GetStorage>()
+                                          .read('waterForDay') -
                                       drunk,
                                   Colors.blueGrey[600],
                                   rankKey: 'remaining',
@@ -80,7 +75,7 @@ Widget Home(){
                           chartType: CircularChartType.Radial,
                           edgeStyle: SegmentEdgeStyle.round,
                           holeLabel:
-                          '${locator.get<GetStorage>().read('drunk')} / ${locator.get<GetStorage>().read('waterForDay')} ml',
+                              '${locator.get<GetStorage>().read('drunk')} / ${locator.get<GetStorage>().read('waterForDay')} ml',
                           labelStyle: new TextStyle(
                             color: Colors.blueGrey[600],
                             fontWeight: FontWeight.bold,

@@ -8,12 +8,22 @@ import 'package:wodobro/presentation/widgets/wodobro_text_field.dart';
 
 import '../../application/locator.dart';
 
+// ignore: must_be_immutable
 class SettingsPage extends StatefulWidget {
   //const SettingsPage({super.key});
 
-  bool areNotificationsEnabledSwitcher = locator.get<GetStorage>().read('enableNotifications');
+  bool areNotificationsEnabledSwitcher =
+      locator.get<GetStorage>().read('enableNotifications') == 'on'
+          ? true
+          : false;
   bool _stateInited = false;
-  TimeOfDay? selectedTime = locator.get<GetStorage>().read('notificationsTime');
+  final hour = locator.get<GetStorage>().read('notificationsTimeHour');
+  TimeOfDay? selectedTime =
+      locator.get<GetStorage>().read('notificationsTimeHour') != null
+          ? TimeOfDay(
+              hour: locator.get<GetStorage>().read('notificationsTimeHour'),
+              minute: locator.get<GetStorage>().read('notificationsTimeMinute'))
+          : null;
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
@@ -31,8 +41,15 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    locator.get<GetStorage>().listenKey('enableNotifications', (value) { print('notifications enabled: $value');});
-    locator.get<GetStorage>().listenKey('notificationsTime', (value) { print('notifications time: $value');});
+    locator.get<GetStorage>().listenKey('enableNotifications', (value) {
+      print('notifications enabled: $value');
+    });
+    locator.get<GetStorage>().listenKey('notificationsTimeHour', (value) {
+      print('notifications hour: $value');
+    });
+    locator.get<GetStorage>().listenKey('notificationsTimeMinute', (value) {
+      print('notifications minute: $value');
+    });
   }
 
   @override
@@ -61,8 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       filled: true,
                       contentPadding: EdgeInsets.all(16),
-                    )
-            )
+                    ))
                 : FutureBuilder<double>(
                     future: locator.get<WeightDomainController>().getWeight(),
                     builder: (context, snapshot) {
@@ -102,7 +118,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     value: widget.areNotificationsEnabledSwitcher,
                     onChanged: (bool switcherNewState) {
                       setState(() {
-                        widget.areNotificationsEnabledSwitcher = switcherNewState;
+                        widget.areNotificationsEnabledSwitcher =
+                            switcherNewState;
                       });
                       if (widget.areNotificationsEnabledSwitcher == true) {
                         enableNotifications(context);
@@ -123,13 +140,11 @@ class _SettingsPageState extends State<SettingsPage> {
                     : '${widget.selectedTime!.hour}:${widget.selectedTime!.minute}'),
                 GestureDetector(
                     child: Icon(Icons.access_time_filled),
-                    onTap: () async{
-                      widget.selectedTime = await changeNotificationsTime(context);
-                      setState(() {
-
-                      });
+                    onTap: () async {
+                      widget.selectedTime =
+                          await changeNotificationsTime(context);
+                      setState(() {});
                     })
-
               ],
             )
           ],
@@ -168,7 +183,7 @@ Future<void> enableNotifications(BuildContext context) async {
   while (Notifications.checkNotificationPermissions() == false) {
     Notifications.requestNotificationPermissions();
   }
-  if (locator.get<GetStorage>().read('notificationsTime') == null) {
+  if (locator.get<GetStorage>().read('notificationsTimeHour') == null) {
     TimeOfDay? selectedTime = null;
     while (selectedTime == null) {
       selectedTime =
@@ -176,18 +191,20 @@ Future<void> enableNotifications(BuildContext context) async {
     }
     Notifications.registerDailyForecastNotifications(time: selectedTime);
 
-    await locator.get<GetStorage>().write('enableNotifications', true);
+    await locator.get<GetStorage>().write('enableNotifications', 'on');
     await locator.get<GetStorage>().write('notificationsTime', selectedTime);
   } else {
     Notifications.registerDailyForecastNotifications(
-        time: locator.get<GetStorage>().read('notificationsTime'));
-    await locator.get<GetStorage>().write('enableNotifications', true);
+        time: TimeOfDay(
+            hour: locator.get<GetStorage>().read('notificationsTimeHour'),
+            minute: locator.get<GetStorage>().read('notificationsTimeMinute')));
+    await locator.get<GetStorage>().write('enableNotifications', 'on');
   }
 }
 
 Future<void> disableNotifications() async {
   Notifications.unsubscribeDailyForecastNotifications();
-  await locator.get<GetStorage>().write('enableNotifications', false);
+  await locator.get<GetStorage>().write('enableNotifications', 'off');
 }
 
 Future<TimeOfDay> changeNotificationsTime(BuildContext context) async {
@@ -196,10 +213,16 @@ Future<TimeOfDay> changeNotificationsTime(BuildContext context) async {
     selectedTime =
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
   }
-  if (locator.get<GetStorage>().read('enableNotifications') == true) {
+  if (locator.get<GetStorage>().read('enableNotifications') == 'on') {
     Notifications.unsubscribeDailyForecastNotifications();
     Notifications.registerDailyForecastNotifications(time: selectedTime);
   }
-  await locator.get<GetStorage>().write('notificationsTime', selectedTime);
+  //int hour = selectedTime.hour;
+  await locator
+      .get<GetStorage>()
+      .write('notificationsTimeHour', selectedTime.hour);
+  await locator
+      .get<GetStorage>()
+      .write('notificationsTimeMinute', selectedTime.minute);
   return selectedTime;
 }

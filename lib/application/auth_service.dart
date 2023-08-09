@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:get_storage/get_storage.dart';
-import 'package:go_router/go_router.dart';
-import 'package:wodobro/presentation/auth/auth_page.dart';
-import 'package:wodobro/presentation/home_page.dart';
-import 'package:wodobro/presentation/intro/intro_page.dart';
 import 'locator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class AuthService{
+class AuthService {
   static SnackBar customSnackBar({required String content}) {
     return SnackBar(
       backgroundColor: Colors.black,
@@ -20,7 +16,7 @@ class AuthService{
     );
   }
 
-  static handleAuthState(){
+  static handleAuthState() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
       if (user == null) {
         print('User is currently signed out!');
@@ -41,7 +37,7 @@ class AuthService{
 
       try {
         final UserCredential userCredential =
-        await auth.signInWithPopup(authProvider);
+            await auth.signInWithPopup(authProvider);
 
         user = userCredential.user;
       } catch (e) {
@@ -51,11 +47,11 @@ class AuthService{
       final GoogleSignIn googleSignIn = GoogleSignIn();
 
       final GoogleSignInAccount? googleSignInAccount =
-      await googleSignIn.signIn();
+          await googleSignIn.signIn();
 
       if (googleSignInAccount != null) {
         final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
 
         final AuthCredential credential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
@@ -64,7 +60,7 @@ class AuthService{
 
         try {
           final UserCredential userCredential =
-          await auth.signInWithCredential(credential);
+              await auth.signInWithCredential(credential);
 
           user = userCredential.user;
         } on FirebaseAuthException catch (e) {
