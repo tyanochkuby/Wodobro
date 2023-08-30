@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:wodobro/data/diary_repo.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,12 +13,15 @@ import 'package:wodobro/data/tips_repo.dart';
 import 'package:wodobro/domain/tips_controller.dart';
 import 'package:wodobro/domain/weight_controller.dart';
 import 'auth_service.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 final locator = GetIt.instance;
 
 final box = GetStorage();
 
-void setup() {
+void setup() async {
+  HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: await getApplicationDocumentsDirectory());
   if (defaultTargetPlatform == TargetPlatform.windows)
     box.writeIfNull('initialLocation', '/intro/1');
   else {

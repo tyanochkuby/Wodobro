@@ -13,17 +13,9 @@ class SettingsPage extends StatefulWidget {
   //const SettingsPage({super.key});
 
   bool areNotificationsEnabledSwitcher =
-      locator.get<GetStorage>().read('enableNotifications') == 'on'
-          ? true
-          : false;
   bool _stateInited = false;
-  final hour = locator.get<GetStorage>().read('notificationsTimeHour');
-  TimeOfDay? selectedTime =
-      locator.get<GetStorage>().read('notificationsTimeHour') != null
-          ? TimeOfDay(
-              hour: locator.get<GetStorage>().read('notificationsTimeHour'),
-              minute: locator.get<GetStorage>().read('notificationsTimeMinute'))
-          : null;
+  final hour = 
+  TimeOfDay? selectedTime =;
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
@@ -39,17 +31,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
-    locator.get<GetStorage>().listenKey('enableNotifications', (value) {
-      print('notifications enabled: $value');
-    });
-    locator.get<GetStorage>().listenKey('notificationsTimeHour', (value) {
-      print('notifications hour: $value');
-    });
-    locator.get<GetStorage>().listenKey('notificationsTimeMinute', (value) {
-      print('notifications minute: $value');
-    });
+   
   }
 
   @override
