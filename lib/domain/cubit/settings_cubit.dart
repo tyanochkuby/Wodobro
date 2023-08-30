@@ -12,7 +12,11 @@ part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
   SettingsCubit()
-      : super(SettingsState(notificationsEnabled: false, userWeight: 0));
+      : super(SettingsState(
+            notificationsEnabled: false,
+            userWeight: 0,
+            selectedHour: null,
+            selectedMinute: null));
 
   void updateSettings(bool notificationsenabled, int selectedHour,
       int selectedMinute, int userWeight) {

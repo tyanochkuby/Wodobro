@@ -64,14 +64,25 @@ class _SettingsPageState extends State<SettingsPage> {
                     CupertinoSwitch(
                         value: state.notificationsEnabled,
                         onChanged: (bool switcherNewState) {
-                          setState(() {
-                            BlocProvider.of<SettingsCubit>(context)
-                                .setNotificationsEnabled(switcherNewState);
-                          });
+                          BlocProvider.of<SettingsCubit>(context)
+                              .setNotificationsEnabled(switcherNewState);
+
                           if (state.notificationsEnabled == true) {
-                            enableNotifications(context);
+                            if (state.selectedHour == null ||
+                                state.selectedMinute == null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          'Please select time for notifications')));
+                            } else {
+                              enableNotifications(
+                                  context,
+                                  TimeOfDay(
+                                      hour: state.selectedHour!,
+                                      minute: state.selectedMinute!));
+                            }
                           } else {
-                            disableNotifications();
+                            disableNotifications(context);
                           }
                         }),
                   ],
@@ -82,15 +93,27 @@ class _SettingsPageState extends State<SettingsPage> {
                     Text('Pick time',
                         style: Theme.of(context).textTheme.titleMedium),
                     const Spacer(),
-                    Text(widget.selectedTime == null
+                    Text(state.selectedHour == null
                         ? 'Not selected'
-                        : '${widget.selectedTime!.hour}:${widget.selectedTime!.minute}'),
+                        : '${state.selectedHour}:${state.selectedMinute}'),
                     GestureDetector(
                         child: Icon(Icons.access_time_filled),
                         onTap: () async {
-                          widget.selectedTime =
-                              await changeNotificationsTime(context);
-                          setState(() {});
+                          TimeOfDay? selectedTime = await showTimePicker(
+                              context: context, initialTime: TimeOfDay.now());
+                          //change time if selected or enable notifications if not
+                          if (selectedTime != null) {
+                            BlocProvider.of<SettingsCubit>(context)
+                                .setTime(selectedTime);
+                            if (state.notificationsEnabled == true)
+                              disableNotifications(context);
+
+                            enableNotifications(context, selectedTime);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Time not selected')));
+                          }
                         })
                   ],
                 )
@@ -110,13 +133,12 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           onPressed: () {
-            locator
-                .get<WeightDomainController>()
-                .setWeight(double.parse(weightController.text));
+            BlocProvider.of<SettingsCubit>(context).setWeight(int.parse(
+                weightController.text.isEmpty ? '0' : weightController.text));
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Text(
-            'Save',
+            'Save weight',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
                   color: const Color.fromRGBO(245, 245, 247, 0.9),
                   fontWeight: FontWeight.bold,
@@ -128,50 +150,16 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 }
 
-Future<void> enableNotifications(BuildContext context) async {
+Future<void> enableNotifications(
+    BuildContext context, TimeOfDay selectedTime) async {
   while (Notifications.checkNotificationPermissions() == false) {
     Notifications.requestNotificationPermissions();
   }
-  if (locator.get<GetStorage>().read('notificationsTimeHour') == null) {
-    TimeOfDay? selectedTime = null;
-    while (selectedTime == null) {
-      selectedTime =
-          await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    }
-    Notifications.registerDailyForecastNotifications(time: selectedTime);
-
-    await locator.get<GetStorage>().write('enableNotifications', 'on');
-    await locator.get<GetStorage>().write('notificationsTime', selectedTime);
-  } else {
-    Notifications.registerDailyForecastNotifications(
-        time: TimeOfDay(
-            hour: locator.get<GetStorage>().read('notificationsTimeHour'),
-            minute: locator.get<GetStorage>().read('notificationsTimeMinute')));
-    await locator.get<GetStorage>().write('enableNotifications', 'on');
-  }
+  Notifications.registerDailyForecastNotifications(time: selectedTime);
+  BlocProvider.of<SettingsCubit>(context).setNotificationsEnabled(true);
 }
 
-Future<void> disableNotifications() async {
+Future<void> disableNotifications(BuildContext context) async {
   Notifications.unsubscribeDailyForecastNotifications();
-  await locator.get<GetStorage>().write('enableNotifications', 'off');
-}
-
-Future<TimeOfDay> changeNotificationsTime(BuildContext context) async {
-  TimeOfDay? selectedTime = null;
-  while (selectedTime == null) {
-    selectedTime =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
-  }
-  if (locator.get<GetStorage>().read('enableNotifications') == 'on') {
-    Notifications.unsubscribeDailyForecastNotifications();
-    Notifications.registerDailyForecastNotifications(time: selectedTime);
-  }
-  //int hour = selectedTime.hour;
-  await locator
-      .get<GetStorage>()
-      .write('notificationsTimeHour', selectedTime.hour);
-  await locator
-      .get<GetStorage>()
-      .write('notificationsTimeMinute', selectedTime.minute);
-  return selectedTime;
+  BlocProvider.of<SettingsCubit>(context).setNotificationsEnabled(false);
 }
