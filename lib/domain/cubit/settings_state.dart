@@ -38,4 +38,18 @@ class SettingsState {
 
   factory SettingsState.fromJson(String source) =>
       SettingsState.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  SettingsState copyWith({
+    bool? notificationsEnabled,
+    int? selectedHour,
+    int? selectedMinute,
+    int? userWeight,
+  }) {
+    return SettingsState(
+      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      selectedHour: selectedHour ?? this.selectedHour,
+      selectedMinute: selectedMinute ?? this.selectedMinute,
+      userWeight: userWeight ?? this.userWeight,
+    );
+  }
 }
