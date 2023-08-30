@@ -6,17 +6,20 @@ class SettingsState {
   bool notificationsEnabled;
   int? selectedHour;
   int? selectedMinute;
+  int userWeight;
 
   SettingsState(
       {required this.notificationsEnabled,
       this.selectedHour,
-      this.selectedMinute});
+      this.selectedMinute,
+      required this.userWeight});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'notificationsEnabled': notificationsEnabled,
       'selectedHour': selectedHour,
       'selectedMinute': selectedMinute,
+      'userWeight': userWeight,
     };
   }
 
@@ -27,6 +30,7 @@ class SettingsState {
           map['selectedHour'] != null ? map['selectedHour'] as int : null,
       selectedMinute:
           map['selectedMinute'] != null ? map['selectedMinute'] as int : null,
+      userWeight: map['userWeight'] as int,
     );
   }
 

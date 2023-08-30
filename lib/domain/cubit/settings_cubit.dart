@@ -9,7 +9,8 @@ import 'dart:convert';
 part 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
-  SettingsCubit() : super(SettingsState(notificationsEnabled: false));
+  SettingsCubit()
+      : super(SettingsState(notificationsEnabled: false, userWeight: 0));
 
   @override
   SettingsState? fromJson(Map<String, dynamic> json) {
