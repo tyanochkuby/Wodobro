@@ -14,7 +14,7 @@ class SettingsCubit extends Cubit<SettingsState> with HydratedMixin {
   SettingsCubit()
       : super(SettingsState(
             notificationsEnabled: false,
-            userWeight: 0,
+            userWeight: null,
             selectedHour: null,
             selectedMinute: null));
 
