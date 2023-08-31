@@ -2,13 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:wodobro/domain/notification_controller.dart';
-import 'package:wodobro/domain/weight_controller.dart';
-import 'package:wodobro/presentation/widgets/wodobro_text_field.dart';
-
-import '../../application/locator.dart';
 
 // ignore: must_be_immutable
 class SettingsPage extends StatefulWidget {

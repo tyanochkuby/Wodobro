@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 
 import '../application/locator.dart';

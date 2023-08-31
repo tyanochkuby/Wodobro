@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:meta/meta.dart';
-import 'dart:convert';
 
 import 'package:wodobro/data/weight_repo.dart';
 
