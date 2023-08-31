@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:wodobro/domain/notification_controller.dart';
 
@@ -124,8 +126,13 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           onPressed: () {
-            BlocProvider.of<SettingsCubit>(context).setWeight(int.parse(
-                weightController.text.isEmpty ? '0' : weightController.text));
+            if (!weightController.text.isEmpty) {
+              BlocProvider.of<SettingsCubit>(context)
+                  .setWeight(int.parse(weightController.text));
+              locator
+                  .get<GetStorage>()
+                  .write('waterForDay', int.parse(weightController.text) * 30);
+            }
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Text(
