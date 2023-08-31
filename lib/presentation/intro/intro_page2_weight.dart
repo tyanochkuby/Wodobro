@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:wodobro/presentation/widgets/wodobro_text_field.dart';
 
 class IntroPage2 extends StatefulWidget {
