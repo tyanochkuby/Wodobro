@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:wodobro/application/locator.dart';
-import 'dart:io';
 import 'package:wodobro/application/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:wodobro/application/workmanager.dart';
 import 'domain/notification_controller.dart';
 import 'firebase_options.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +21,6 @@ void main() async {
   } catch (e) {}
   print('firebase inited');
   await FlutterDisplayMode.setHighRefreshRate();
-
 
   //Setting SysemUIOverlay
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -48,10 +47,13 @@ class Wodobro extends StatelessWidget {
   static const String title = 'Wodobro';
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        routerDelegate: goRouter.routerDelegate,
-        routeInformationParser: goRouter.routeInformationParser,
-        routeInformationProvider: goRouter.routeInformationProvider,
+  Widget build(BuildContext context) => BlocProvider(
+        create: (context) => SettingsCubit(),
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          routerDelegate: goRouter.routerDelegate,
+          routeInformationParser: goRouter.routeInformationParser,
+          routeInformationProvider: goRouter.routeInformationProvider,
+        ),
       );
 }

@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:permission_handler/permission_handler.dart' as perm_handler;
 import 'package:timezone/standalone.dart' as tz;
 import 'package:workmanager/workmanager.dart';
-
-import '../application/locator.dart';
 
 class Notifications {
   static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -40,7 +36,8 @@ class Notifications {
   static Future<void> registerDailyForecastNotifications(
       {required TimeOfDay? time}) async {
     final int minutesNow = DateTime.now().minute + DateTime.now().hour;
-    final int minutesThen = time == null ? 540 : time.hour + time.minute; //default time - 8AM
+    final int minutesThen =
+        time == null ? 540 : time.hour + time.minute; //default time - 8AM
     int dur = 0;
     dur = minutesNow > minutesThen
         ? 1440 - minutesNow + minutesThen
@@ -107,8 +104,9 @@ class Notifications {
         : scheduledDate;
   }
 
-  static void requestNotificationPermissions() async{
-    final perm_handler.PermissionStatus status = await perm_handler.Permission.notification.request();
+  static void requestNotificationPermissions() async {
+    final perm_handler.PermissionStatus status =
+        await perm_handler.Permission.notification.request();
     if (status.isGranted) {
       // Notification permissions granted
     } else if (status.isDenied) {
@@ -118,8 +116,9 @@ class Notifications {
     }
   }
 
-  static Future<bool> checkNotificationPermissions() async{
-    final perm_handler.PermissionStatus status = await perm_handler.Permission.notification.status;
+  static Future<bool> checkNotificationPermissions() async {
+    final perm_handler.PermissionStatus status =
+        await perm_handler.Permission.notification.status;
     if (status.isGranted) {
       return true;
     } else if (status.isDenied) {

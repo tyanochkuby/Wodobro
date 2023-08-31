@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart' as perm_handler;
 import 'package:wodobro/domain/notification_controller.dart';
-import 'package:wodobro/presentation/widgets/big_bottom_button.dart';
 
 import '../../application/locator.dart';
 import '../widgets/lava.dart';
 
 class IntroPage4 extends StatelessWidget {
   const IntroPage4({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,24 +58,34 @@ class IntroPage4 extends StatelessWidget {
                   if (status.isGranted) {
                     TimeOfDay? selectedTime = null;
                     while (selectedTime == null) {
-                      selectedTime = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+                      selectedTime = await showTimePicker(
+                          context: context, initialTime: TimeOfDay.now());
                     }
                     Notifications.registerDailyForecastNotifications(
                         time: selectedTime);
 
                     locator.get<GetStorage>().write('initialLocation', '/home');
-                    locator.get<GetStorage>().write('enableNotifications', true);
-                    locator.get<GetStorage>().write('notificationsTime', selectedTime);
+                    locator
+                        .get<GetStorage>()
+                        .write('enableNotifications', 'on');
+                    locator
+                        .get<GetStorage>()
+                        .write('notificationsTimeHour', selectedTime.hour);
+                    locator
+                        .get<GetStorage>()
+                        .write('notificationsTimeMinute', selectedTime.minute);
                     context.go('/home');
                   }
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.37,
-                  child: Text('Yep, ask\nfor permission',
+                  child: Text(
+                    'Yep, ask\nfor permission',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: const Color.fromRGBO(245, 245, 247, 0.9),
-                      fontWeight: FontWeight.bold,
-                    ),),
+                          color: const Color.fromRGBO(245, 245, 247, 0.9),
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ),
               ),
               const Spacer(),
@@ -96,18 +102,25 @@ class IntroPage4 extends StatelessWidget {
                   backgroundColor: const Color.fromRGBO(245, 245, 247, 0.9),
                 ),
                 onPressed: () async {
-                    locator.get<GetStorage>().write('initialLocation', '/home');
-                    locator.get<GetStorage>().write('enableNotifications', false);
-                    locator.get<GetStorage>().write('notificationsTime', null);
-                    context.go('/home');
+                  locator.get<GetStorage>().write('initialLocation', '/home');
+                  locator.get<GetStorage>().write('enableNotifications', 'off');
+                  locator
+                      .get<GetStorage>()
+                      .write('notificationsTimeHour', null);
+                  locator
+                      .get<GetStorage>()
+                      .write('notificationsTimeMinute', null);
+                  context.go('/home');
                 },
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.37,
-                  child: Text("No, don't send\nme notifications",
+                  child: Text(
+                    "No, don't send\nme notifications",
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: const Color.fromRGBO(45, 45, 47, 0.9),
-                      fontWeight: FontWeight.bold,
-                    ),),
+                          color: const Color.fromRGBO(45, 45, 47, 0.9),
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
                 ),
               ),
               //const Spacer(),
@@ -130,5 +143,3 @@ Future<void> requestNotificationPermissions() async {
     // Notification permissions permanently denied, open app settings
   }
 }
-
-

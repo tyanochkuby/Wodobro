@@ -8,7 +8,8 @@ void callbackDispatcher() {
     switch (taskName) {
       case 'schedule_weather_notification_task':
         print('notification task started');
-        final double maxTemp = await TemperatureDomainController.getTodayMaxTemperature();
+        final double maxTemp =
+            await TemperatureDomainController.getTodayMaxTemperature();
         if (maxTemp > 20) {
           Notifications.showNotification(
             id: 228,
@@ -24,10 +25,8 @@ void callbackDispatcher() {
         print('task ended');
         return Future.value(true);
 
-        break;
       default:
         return Future.error('workmanager.dart: No such task defined');
     }
-    return Future.value(true);
   });
 }

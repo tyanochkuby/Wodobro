@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wodobro/presentation/widgets/big_bottom_button.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
 
 class AuthPage extends StatelessWidget {

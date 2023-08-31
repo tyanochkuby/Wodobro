@@ -7,7 +7,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:wodobro/domain/diary_controller.dart';
 import 'package:wodobro/application/locator.dart';
-import 'package:wodobro/domain/hydration_controller.dart';
 import 'package:wodobro/domain/view%20models/homepage_viewmodel.dart';
 import 'package:wodobro/presentation/pages/diary.dart';
 import 'package:wodobro/presentation/pages/settings.dart';
@@ -15,9 +14,6 @@ import 'package:wodobro/presentation/pages/tips.dart';
 import 'package:circular_chart_flutter/circular_chart_flutter.dart';
 import 'package:wodobro/presentation/pages/home.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
-import 'dart:async';
-
-import '../domain/notification_controller.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -101,8 +97,7 @@ class _HomePageState extends State<HomePage> {
                                       locator
                                           .get<GetStorage>()
                                           .write('drunk', drunk);
-                                      additionalWater =
-                                          snapshot.data![0];
+                                      additionalWater = snapshot.data![0];
                                       return Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.all(
@@ -136,7 +131,11 @@ class _HomePageState extends State<HomePage> {
                                                         rankKey: 'completed',
                                                       ),
                                                       new CircularSegmentEntry(
-                                                        locator.get<GetStorage>().read('waterForDay') +
+                                                        locator
+                                                                .get<
+                                                                    GetStorage>()
+                                                                .read(
+                                                                    'waterForDay') +
                                                             additionalWater -
                                                             drunk,
                                                         Colors.blueGrey[600],
@@ -241,55 +240,58 @@ class _HomePageState extends State<HomePage> {
               childrenButtonSize: Size(80.0, 80.0),
               children: [
                 SpeedDialChild(
-                  child: Text('Other',
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.black45,
-                          fontWeight: FontWeight.bold)),
-                  onTap: () async {
-                    int otherAmount = await showDialog(context: context, builder: (context) => AlertDialog(
-                      title: const Text('Enter an amount'),
-                      content: TextField(
-                        controller: otherAmountController,
-                        keyboardType: TextInputType.number,
-                        autofocus: true,
-                        decoration: InputDecoration(hintText: 'Here!'),
-                      ),
-                      actions: [
-                        TextButton(onPressed: () {
-                          Navigator.of(context).pop(int.parse(otherAmountController.text));
-                        },
-                            child: const Text('Submit'))
-                      ],
-                    )
-                    );
-                    locator
-                        .get<DiaryDomainController>()
-                        .addSip(null, otherAmount, null);
-                    drunk += otherAmount;
-                    List<CircularStackEntry> nextData = <CircularStackEntry>[
-                      new CircularStackEntry(
-                        <CircularSegmentEntry>[
-                          new CircularSegmentEntry(
-                              (drunk), Color.fromRGBO(22, 48, 90, 1),
-                              rankKey: 'completed'),
-                          new CircularSegmentEntry(
-                              locator.get<GetStorage>().read('waterForDay') -
-                                  drunk,
-                              Colors.blueGrey[600],
-                              rankKey: 'remaining'),
-                        ],
-                        rankKey: 'Quarterly Profits',
-                      ),
-                    ];
-                    setState(() {
-                      locator.get<GetStorage>().write('drunk', drunk);
+                    child: Text('Other',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.black45,
+                            fontWeight: FontWeight.bold)),
+                    onTap: () async {
+                      int otherAmount = await showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('Enter an amount'),
+                                content: TextField(
+                                  controller: otherAmountController,
+                                  keyboardType: TextInputType.number,
+                                  autofocus: true,
+                                  decoration:
+                                      InputDecoration(hintText: 'Here!'),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(int.parse(
+                                            otherAmountController.text));
+                                      },
+                                      child: const Text('Submit'))
+                                ],
+                              ));
                       locator
-                          .get<GlobalKey<AnimatedCircularChartState>>()
-                          .currentState
-                          ?.updateData(nextData);
-                    });
-                  }
-                ),
+                          .get<DiaryDomainController>()
+                          .addSip(null, otherAmount, null);
+                      drunk += otherAmount;
+                      List<CircularStackEntry> nextData = <CircularStackEntry>[
+                        new CircularStackEntry(
+                          <CircularSegmentEntry>[
+                            new CircularSegmentEntry(
+                                (drunk), Color.fromRGBO(22, 48, 90, 1),
+                                rankKey: 'completed'),
+                            new CircularSegmentEntry(
+                                locator.get<GetStorage>().read('waterForDay') -
+                                    drunk,
+                                Colors.blueGrey[600],
+                                rankKey: 'remaining'),
+                          ],
+                          rankKey: 'Quarterly Profits',
+                        ),
+                      ];
+                      setState(() {
+                        locator.get<GetStorage>().write('drunk', drunk);
+                        locator
+                            .get<GlobalKey<AnimatedCircularChartState>>()
+                            .currentState
+                            ?.updateData(nextData);
+                      });
+                    }),
                 SpeedDialChild(
                   child: Text('100 ml',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -332,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                       locator
                           .get<DiaryDomainController>()
                           .addSip(null, 200, null);
-                      drunk+=200;
+                      drunk += 200;
                       List<CircularStackEntry> nextData = <CircularStackEntry>[
                         new CircularStackEntry(
                           <CircularSegmentEntry>[

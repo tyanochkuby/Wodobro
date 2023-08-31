@@ -2,13 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get_it/get_it.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/models/diary_entry.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class DiaryRepo {
   Future<void> saveDiary(List<DiaryEntry> diary) async {
@@ -70,7 +68,6 @@ class DiaryRepo {
       return [];
   }
 
-
   Future<List<DiaryEntry>> addSip(String date, int amount, String? time) async {
     final diary = await loadDiary();
     if (time == null) time = DateFormat('HH:mm').format(DateTime.now());
@@ -84,5 +81,4 @@ class DiaryRepo {
     await saveDiary(diary);
     return diary;
   }
-
 }

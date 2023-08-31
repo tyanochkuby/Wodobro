@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:wodobro/application/locator.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:wodobro/domain/tips_controller.dart';
-import 'package:wodobro/presentation/home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -40,6 +37,7 @@ class _TipsPageState extends State<TipsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Container(
+              height: MediaQuery.of(context).size.height * 0.38,
               decoration: BoxDecoration(
                 color: Colors.grey[400],
                 borderRadius: BorderRadius.circular(32),
@@ -76,11 +74,14 @@ class _TipsPageState extends State<TipsPage> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 14.0, vertical: 8.0),
-                              child: Text(
-                                '${snapshot.data!}',
-                                style: GoogleFonts.robotoSlab(
-                                  color: Colors.black87,
-                                  fontSize: 35,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Text(
+                                  '${snapshot.data!}',
+                                  style: GoogleFonts.robotoSlab(
+                                    color: Colors.black87,
+                                    fontSize: 35,
+                                  ),
                                 ),
                               ),
                             );
@@ -89,10 +90,11 @@ class _TipsPageState extends State<TipsPage> {
               ),
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.005),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 58.0, vertical: 24),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 58.0, vertical: 24),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(18),
@@ -106,7 +108,8 @@ class _TipsPageState extends State<TipsPage> {
                   });
                 },
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.2),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.1),
                   child: Text(
                     'Next tip',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(

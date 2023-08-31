@@ -4,7 +4,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 class PositionController extends GetxController {
-  Rx<Position> rxPosition = Position.fromMap({'latitude': 0.0, 'longitude': 0.0}).obs;
+  Rx<Position> rxPosition =
+      Position.fromMap({'latitude': 0.0, 'longitude': 0.0}).obs;
 
   static Future<Position> getGeoPosition() async {
     bool serviceEnabled;
@@ -40,22 +41,25 @@ class PositionController extends GetxController {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    Position? position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);//await Geolocator.getLastKnownPosition(); //Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    if (position != null)
-      return position;
-    else
-      return Position(longitude: 0.0, latitude: 0.0, timestamp: null, accuracy: 0.0, altitude: 0.0, heading: 0.0, speed: 0.0, speedAccuracy: 0.0);
-    return Position.fromMap({'longitude': 16.92, 'latitude': 52.41});
+    Position? position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy
+            .low); //await Geolocator.getLastKnownPosition(); //Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    //if (position != null)
+    return position;
+    //else
+    //return Position(longitude: 0.0, latitude: 0.0, timestamp: null, accuracy: 0.0, altitude: 0.0, heading: 0.0, speed: 0.0, speedAccuracy: 0.0);
   }
 
-  static Future<bool> checkPermissionGranted() async{
+  static Future<bool> checkPermissionGranted() async {
     var permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.deniedForever || permission == LocationPermission.denied || permission == LocationPermission.unableToDetermine) {
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied ||
+        permission == LocationPermission.unableToDetermine) {
       return false;
-    } else if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+    } else if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
       return true;
-    }
-    else
+    } else
       return false;
   }
 
@@ -63,13 +67,16 @@ class PositionController extends GetxController {
     var permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
       return false;
-    } else if (permission == LocationPermission.always || permission == LocationPermission.whileInUse) {
+    } else if (permission == LocationPermission.always ||
+        permission == LocationPermission.whileInUse) {
       return true;
     }
 
-    if (permission == LocationPermission.denied || permission == LocationPermission.unableToDetermine) {
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.unableToDetermine) {
       permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
         Get.snackbar('No permission was granted', 'Cannot get position');
         return false;
       } else {

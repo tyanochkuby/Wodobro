@@ -2,14 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter/services.dart';
-import 'package:wodobro/application/auth_service.dart';
 import 'package:wodobro/application/locator.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:wodobro/presentation/auth/auth_page.dart';
 import 'package:wodobro/presentation/auth/auth_page_2.dart';
 import 'package:wodobro/presentation/pages/tips.dart';
-import 'dart:io' show Platform;
 
 import 'package:wodobro/presentation/intro/intro_page.dart';
 import 'package:wodobro/presentation/intro/intro_page2_weight.dart';

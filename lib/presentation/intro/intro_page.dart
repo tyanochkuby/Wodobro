@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
-import 'package:wodobro/presentation/widgets/wodobro_text_field.dart';
-
-import 'package:wodobro/domain/position_controller.dart';
-import 'package:wodobro/application/routes.dart';
-import 'package:wodobro/application/locator.dart';
-import 'package:wodobro/presentation/widgets/lava_painter.dart';
 
 class IntroPage1 extends StatelessWidget {
   const IntroPage1({super.key});
@@ -109,6 +102,3 @@ class IntroPage1 extends StatelessWidget {
     );
   }
 }
-
-
-
