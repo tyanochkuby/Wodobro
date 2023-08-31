@@ -37,6 +37,7 @@ class _TipsPageState extends State<TipsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
             child: Container(
+              height: MediaQuery.of(context).size.height * 0.38,
               decoration: BoxDecoration(
                 color: Colors.grey[400],
                 borderRadius: BorderRadius.circular(32),
@@ -73,11 +74,14 @@ class _TipsPageState extends State<TipsPage> {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 14.0, vertical: 8.0),
-                              child: Text(
-                                '${snapshot.data!}',
-                                style: GoogleFonts.robotoSlab(
-                                  color: Colors.black87,
-                                  fontSize: 35,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.vertical,
+                                child: Text(
+                                  '${snapshot.data!}',
+                                  style: GoogleFonts.robotoSlab(
+                                    color: Colors.black87,
+                                    fontSize: 35,
+                                  ),
                                 ),
                               ),
                             );
@@ -86,7 +90,7 @@ class _TipsPageState extends State<TipsPage> {
               ),
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.005),
           SafeArea(
             child: Padding(
               padding:
@@ -105,7 +109,7 @@ class _TipsPageState extends State<TipsPage> {
                 },
                 child: Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.2),
+                      horizontal: MediaQuery.of(context).size.width * 0.1),
                   child: Text(
                     'Next tip',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(

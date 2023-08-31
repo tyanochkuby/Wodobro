@@ -20,13 +20,9 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
-        child: BlocConsumer<SettingsCubit, SettingsState>(
-          listenWhen: (previous, current) =>
-              previous.userWeight != current.userWeight,
-          listener: (context, state) {
-            weightController.text = state.userWeight.toString();
-          },
+        child: BlocBuilder<SettingsCubit, SettingsState>(
           builder: (context, state) {
+            weightController.text = state.userWeight.toString();
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

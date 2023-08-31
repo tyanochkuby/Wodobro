@@ -11,7 +11,6 @@ import 'package:wodobro/domain/hydration_controller.dart';
 import 'package:wodobro/domain/position_controller.dart';
 import 'package:wodobro/data/tips_repo.dart';
 import 'package:wodobro/domain/tips_controller.dart';
-import 'package:wodobro/domain/weight_controller.dart';
 import 'auth_service.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
@@ -40,8 +39,6 @@ void setup() async {
       () => DiaryDomainController());
   locator.registerLazySingleton<TipsDomainController>(
       () => TipsDomainController());
-  locator.registerLazySingleton<WeightDomainController>(
-      () => WeightDomainController());
   locator.registerLazySingleton<GetStorage>(() => box);
   locator.registerLazySingleton<PositionController>(() => PositionController());
   locator
