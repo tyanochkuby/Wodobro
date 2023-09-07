@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:timezone/timezone.dart';
 import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
@@ -33,6 +32,9 @@ class _IntroPage2State extends State<IntroPage2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 20,
+                ),
                 Expanded(
                   child: Text('First, we need to know your weight',
                       style: Theme.of(context)
@@ -42,17 +44,12 @@ class _IntroPage2State extends State<IntroPage2> {
                 ),
                 const SizedBox(height: 55),
                 SizedBox(
-                  child: BlocBuilder<SettingsCubit, SettingsState>(
-                    builder: (context, state) {
-                      return WodobroTextField(
-                        controller: weightController,
-                        hintText: 'Enter your weight',
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r"[\d]")),
-                        ],
-                      );
-                    },
+                  child: WodobroTextField(
+                    controller: weightController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(RegExp(r"[\d]")),
+                    ],
                   ),
                 ),
               ],

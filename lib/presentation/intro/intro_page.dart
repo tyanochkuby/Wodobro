@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class IntroPage1 extends StatelessWidget {
   const IntroPage1({super.key});
@@ -19,15 +20,25 @@ class IntroPage1 extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Wodobro',
+                SizedBox(
+                  height: 20,
+                ),
+                AutoSizeText('Wodobro',
                     style: Theme.of(context).textTheme.displayLarge?.copyWith(
                         color: const Color.fromRGBO(142, 201, 249, 1),
-                        fontWeight: FontWeight.bold)),
-                Text('A simply way to track your water intake',
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(color: Colors.black38)),
+                        fontWeight: FontWeight.bold),
+                    maxLines: 1),
+                SizedBox(
+                  height: 20,
+                ),
+                AutoSizeText(
+                  'A simply way to track your water intake',
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayMedium
+                      ?.copyWith(color: Colors.black38),
+                  maxLines: 2,
+                ),
                 const SizedBox(height: 26),
                 Column(
                   children: [

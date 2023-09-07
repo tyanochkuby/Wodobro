@@ -12,7 +12,7 @@ class LavaPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (lava.size != size) lava.updateSize(size);
+    // if (lava.size != size) lava.updateSize(size);
     lava.draw(canvas, size, color, debug: false);
   }
 
@@ -190,8 +190,8 @@ class Lava {
       }
 
       matrix.forEach(
-            (_, item) => item.forEach(
-              (_, point) => canvas.drawCircle(
+        (_, item) => item.forEach(
+          (_, point) => canvas.drawCircle(
             Offset(point.x.toDouble(), point.y.toDouble()),
             max(1, min(point.force.abs(), 5)),
             Paint()..color = point.force > 0 ? Colors.blue : Colors.red,
