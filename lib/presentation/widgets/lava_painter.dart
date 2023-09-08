@@ -12,7 +12,7 @@ class LavaPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // if (lava.size != size) lava.updateSize(size);
+    if (lava.size != size) lava.updateSize(size);
     lava.draw(canvas, size, color, debug: false);
   }
 

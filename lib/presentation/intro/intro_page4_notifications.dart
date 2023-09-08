@@ -1,7 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart' as perm_handler;
+import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:wodobro/domain/notification_controller.dart';
 
 import '../../application/locator.dart';
@@ -25,13 +28,15 @@ class IntroPage4 extends StatelessWidget {
               children: [
                 const SizedBox(height: 50),
                 Expanded(
-                  child: Text(
-                      'Finally, we need to ask you for permission to send you notifications\n'
-                      '\nThis way we can remind you to drink water\n',
+                  child: AutoSizeText(
+                      'And please let us send you notifications\nSo that we can remind you to drink water',
+                      maxLines: 7,
                       style: Theme.of(context)
                           .textTheme
                           .displayMedium
-                          ?.copyWith(color: Colors.black38)),
+                          ?.copyWith(
+                              color: Colors.black38,
+                              fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(height: 55),
               ],
@@ -65,25 +70,30 @@ class IntroPage4 extends StatelessWidget {
                         time: selectedTime);
 
                     locator.get<GetStorage>().write('initialLocation', '/home');
-                    locator
-                        .get<GetStorage>()
-                        .write('enableNotifications', 'on');
-                    locator
-                        .get<GetStorage>()
-                        .write('notificationsTimeHour', selectedTime.hour);
-                    locator
-                        .get<GetStorage>()
-                        .write('notificationsTimeMinute', selectedTime.minute);
+                    // locator
+                    //     .get<GetStorage>()
+                    //     .write('enableNotifications', 'on');
+                    context
+                        .watch<SettingsCubit>()
+                        .setNotificationsEnabled(true);
+                    context.watch<SettingsCubit>().setTime(selectedTime);
+                    // locator
+                    //     .get<GetStorage>()
+                    //     .write('notificationsTimeHour', selectedTime.hour);
+                    // locator
+                    //     .get<GetStorage>()
+                    //     .write('notificationsTimeMinute', selectedTime.minute);
                     context.go('/home');
                   }
                 },
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.37,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   child: Text(
                     'Yep, ask\nfor permission',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: const Color.fromRGBO(245, 245, 247, 0.9),
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                   ),
                 ),
@@ -113,12 +123,13 @@ class IntroPage4 extends StatelessWidget {
                   context.go('/home');
                 },
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.37,
+                  width: MediaQuery.of(context).size.width * 0.35,
                   child: Text(
-                    "No, don't send\nme notifications",
+                    "Don't send me notifications",
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: const Color.fromRGBO(45, 45, 47, 0.9),
                           fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                   ),
                 ),

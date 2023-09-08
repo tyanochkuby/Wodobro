@@ -36,7 +36,7 @@ void main() async {
   await GetStorage.init();
   await Notifications.init();
   await Workmanager().initialize(callbackDispatcher, isInDebugMode: false);
-  setup();
+  await setup();
   print('setup done');
   runApp(const Wodobro());
 }

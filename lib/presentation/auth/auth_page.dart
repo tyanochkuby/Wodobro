@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
@@ -17,18 +18,19 @@ class AuthPage extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
               child: Column(
                 children: [
-                  Text('Welcome to Wodobro',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium
-                          ?.copyWith(
-                              color: Colors.black54,
-                              fontWeight: FontWeight.bold)),
+                  AutoSizeText(
+                    'Welcome to Wodobro',
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        color: Colors.black54, fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                  ),
                   SizedBox(height: 26),
-                  Text(
-                      'In order to use this app, you need to sign in with your Google account',
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          color: Colors.black38, fontWeight: FontWeight.bold)),
+                  AutoSizeText(
+                    'In order to use this app, you need to sign in with your Google account',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                        color: Colors.black38, fontWeight: FontWeight.bold),
+                    maxLines: 4,
+                  ),
                   const SizedBox(height: 26),
                 ],
               ),

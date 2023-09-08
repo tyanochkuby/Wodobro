@@ -18,7 +18,7 @@ final locator = GetIt.instance;
 
 final box = GetStorage();
 
-void setup() async {
+Future<void> setup() async {
   HydratedBloc.storage = await HydratedStorage.build(
       storageDirectory: await getApplicationDocumentsDirectory());
   if (defaultTargetPlatform == TargetPlatform.windows)
