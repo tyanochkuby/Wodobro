@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:timezone/timezone.dart';
 import 'package:wodobro/application/locator.dart';
 import 'package:wodobro/domain/cubit/settings_cubit.dart';
 import 'package:wodobro/presentation/widgets/lava.dart';
@@ -17,11 +16,10 @@ class IntroPage2 extends StatefulWidget {
 }
 
 class _IntroPage2State extends State<IntroPage2> {
+  final weightController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    final weightController = TextEditingController(
-        text:
-            context.watch<SettingsCubit>().state.userWeight?.toString() ?? '');
     return Scaffold(
       body: LavaAnimation(
         color: Color.fromRGBO(142, 201, 249, 1),
@@ -33,26 +31,33 @@ class _IntroPage2State extends State<IntroPage2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 20,
+                ),
                 Expanded(
                   child: Text('First, we need to know your weight',
                       style: Theme.of(context)
                           .textTheme
                           .displayMedium
-                          ?.copyWith(color: Colors.black38)),
+                          ?.copyWith(
+                              color: Colors.black54,
+                              fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(height: 55),
                 SizedBox(
-                  child: BlocBuilder<SettingsCubit, SettingsState>(
-                    builder: (context, state) {
-                      return WodobroTextField(
-                        controller: weightController,
-                        hintText: 'Enter your weight',
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.allow(RegExp(r"[\d]")),
-                        ],
-                      );
+                  child: BlocListener<SettingsCubit, SettingsState>(
+                    listenWhen: (previous, current) =>
+                        previous.userWeight != current.userWeight,
+                    listener: (context, state) {
+                      weightController.text = state.userWeight.toString();
                     },
+                    child: WodobroTextField(
+                      controller: weightController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp(r"[\d]")),
+                      ],
+                    ),
                   ),
                 ),
               ],

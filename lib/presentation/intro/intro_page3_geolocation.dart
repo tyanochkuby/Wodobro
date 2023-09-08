@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
@@ -26,16 +27,32 @@ class _IntroPage3State extends State<IntroPage3> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height:50),
+                const SizedBox(height: 50),
                 Expanded(
-                  child: Text(
-                      'Now, we need to know your location\n'
-                      'This way we can calculate the amount of water\n'
-                      'you need to drink today',
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium
-                          ?.copyWith(color: Colors.black38)),
+                  child: Column(
+                    children: [
+                      AutoSizeText('Now, we need to know your location',
+                          maxLines: 3,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(
+                                  color: Colors.black54,
+                                  fontWeight: FontWeight.bold)),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      AutoSizeText(
+                        'This way we can calculate the amount of water you need to drink today',
+                        maxFontSize: 38,
+                        maxLines: 5,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium!
+                            .copyWith(color: Colors.black38),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 55),
               ],
